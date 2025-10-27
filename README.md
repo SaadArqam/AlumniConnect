@@ -113,10 +113,10 @@ MongoDB is managed through Prisma ORM for type-safe queries and schema validatio
   [GitHub](https://github.com/CodyBrat) | [LinkedIn](https://linkedin.com/in/saadarqam)
 
 - **Premansh Behl** — Developer & Designer  
-  [GitHub](https://github.com/SaadArqam) | [LinkedIn](https://linkedin.com/in/saadarqam)
+  [GitHub](https://github.com/PremanshBehl) | [LinkedIn](https://linkedin.com/in/saadarqam)
   
 - **Pathan Amaan** — Developer & Designer  
-  [GitHub](https://github.com/SaadArqam) | [LinkedIn](https://linkedin.com/in/saadarqam)
+  [GitHub](https://github.com/Amaan-pathan) | [LinkedIn](https://linkedin.com/in/saadarqam)
 ---
 
 ## 📄 License
