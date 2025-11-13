@@ -7,7 +7,7 @@ const passport = require("./google_auth");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-// ✅ Import chat socket handler (we’ll define next)
+
 const chatSocket = require("./chat/chat.socket");
 
 const app = express();
@@ -16,10 +16,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(passport.initialize());
 
-// ✅ Create one shared HTTP server
+// one shared HTTP server
 const server = http.createServer(app);
 
-// ✅ Initialize Socket.IO
+// Initialize Socket.IO
 const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_URL || "*",
@@ -27,10 +27,10 @@ const io = new Server(server, {
   },
 });
 
-// ✅ Attach chat handler
+
 chatSocket(io);
 
-// ---------------- GOOGLE AUTH ROUTES ----------------
+// GOOGLE AUTH ROUTES 
 
 app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
@@ -48,7 +48,7 @@ app.get(
   }
 );
 
-// ---------------- PROTECTED API EXAMPLE ----------------
+// PROTECTED API ex. 
 app.get("/api/profile", async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
@@ -62,7 +62,7 @@ app.get("/api/profile", async (req, res) => {
   }
 });
 
-// ---------------- START SERVER ----------------
+// START SERVER 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`✅ Server + Socket.IO running on port ${PORT}`);
