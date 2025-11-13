@@ -1,21 +1,38 @@
-const express=require('express')
-
+const express = require("express");
+const http = require("http");
+const cors = require("cors");
+const { Server } = require("socket.io");
+const cookieParser = require("cookie-parser");
 const passport = require("./google_auth");
 const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
-const app=express()
-app.use(express.json())
+// ✅ Import chat socket handler (we’ll define next)
+const chatSocket = require("./chat/chat.socket");
 
+const app = express();
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(express.json());
 app.use(cookieParser());
 app.use(passport.initialize());
 
-// Google Auth
-app.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+// ✅ Create one shared HTTP server
+const server = http.createServer(app);
+
+// ✅ Initialize Socket.IO
+const io = new Server(server, {
+  cors: {
+    origin: process.env.CLIENT_URL || "*",
+    methods: ["GET", "POST"],
+  },
+});
+
+// ✅ Attach chat handler
+chatSocket(io);
+
+// ---------------- GOOGLE AUTH ROUTES ----------------
+
+app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
 app.get(
   "/auth/google/callback",
@@ -31,22 +48,22 @@ app.get(
   }
 );
 
-// Protected API route example
+// ---------------- PROTECTED API EXAMPLE ----------------
 app.get("/api/profile", async (req, res) => {
-    try {
-      const authHeader = req.headers.authorization;
-      if (!authHeader) return res.status(401).json({ error: "Unauthorized" });
-  
-      const token = authHeader.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      res.json({ message: "Access granted", userId: decoded.userId });
-    } catch (err) {
-      res.status(403).json({ error: "Invalid token" });
-    }
-  });
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return res.status(401).json({ error: "Unauthorized" });
 
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    res.json({ message: "Access granted", userId: decoded.userId });
+  } catch (err) {
+    res.status(403).json({ error: "Invalid token" });
+  }
+});
 
+// ---------------- START SERVER ----------------
 const PORT = process.env.PORT || 3000;
-app.listen(PORT,()=>{
-    console.log("server running on port",PORT )
-})
+server.listen(PORT, () => {
+  console.log(`✅ Server + Socket.IO running on port ${PORT}`);
+});
