@@ -10,11 +10,14 @@ require("dotenv").config();
 
 const chatSocket = require("./chat/chat.socket");
 
+const authRoutes = require("./jwt/auth");
+
 const app = express();
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(passport.initialize());
+app.use("/auth", authRoutes);
 
 // one shared HTTP server
 const server = http.createServer(app);
