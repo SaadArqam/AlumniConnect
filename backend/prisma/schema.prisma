@@ -29,6 +29,9 @@ model User {
   posts           Post[]
   comments        Comment[] // ✅ added this line
   createdAt       DateTime     @default(now())
+
+  threads  Thread[] // ✅ REQUIRED FIX
+  messages Message[] // ✅ REQUIRED FIX
 }
 
 type SocialLinks {
@@ -56,5 +59,27 @@ model Comment {
   authorId  String   @db.ObjectId
   author    User     @relation(fields: [authorId], references: [id])
   content   String
+  createdAt DateTime @default(now())
+}
+
+model Thread {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  createdById String    @db.ObjectId
+  createdBy   User      @relation(fields: [createdById], references: [id])
+  createdAt   DateTime  @default(now())
+  messages    Message[]
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  threadId  String   @db.ObjectId
+  thread    Thread   @relation(fields: [threadId], references: [id])
+  authorId  String   @db.ObjectId
+  author    User     @relation(fields: [authorId], references: [id])
+  content   String
+  parentId  String?  @db.ObjectId
+  upvotes   String[] // store User IDs as ObjectId strings
+  edited    Boolean  @default(false)
   createdAt DateTime @default(now())
 }

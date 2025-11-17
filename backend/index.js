@@ -3,21 +3,22 @@ const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const cookieParser = require("cookie-parser");
-const passport = require("./google_auth");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-
-const chatSocket = require("./chat/chat.socket");
-
-const authRoutes = require("./jwt/auth");
+const passport = require("./google_auth");
+const authRouter = require("./src/features/auth/auth.controller");
+const threadRoutes = require("./src/features/threads/threads.routes");
+const chatSocket = require("./src/features/chat/chat.socket");
+const verifyJWT = require("./src/features/auth/auth.service");
 
 const app = express();
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(passport.initialize());
-app.use("/auth", authRoutes);
+app.use("/auth", authRouter);
+app.use("/api/threads", threadRoutes);
 
 // one shared HTTP server
 const server = http.createServer(app);
@@ -51,18 +52,9 @@ app.get(
   }
 );
 
-// PROTECTED API ex. 
-app.get("/api/profile", async (req, res) => {
-  try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) return res.status(401).json({ error: "Unauthorized" });
-
-    const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    res.json({ message: "Access granted", userId: decoded.userId });
-  } catch (err) {
-    res.status(403).json({ error: "Invalid token" });
-  }
+// PROTECTED API
+app.get("/api/profile", verifyJWT, async (req, res) => {
+  res.json({ message: "Access granted", userId: req.user.userId });
 });
 
 // START SERVER 
