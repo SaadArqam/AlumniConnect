@@ -33,6 +33,31 @@ async function getMessages(req, res) {
   }
 }
 
+async function createMessage(req, res) {
+  try {
+    const { threadId } = req.params;
+    const { content, parentId } = req.body;
+    const authorId = req.user.userId;
+    const msg = await chatService.createMessage({ threadId, authorId, content, parentId });
+    res.status(201).json(msg);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+}
+
+async function toggleUpvote(req, res) {
+  try {
+    const { messageId } = req.params;
+    const userId = req.user.userId;
+    const updated = await chatService.toggleUpvote({ messageId, userId });
+    res.json(updated);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+}
+
 async function deleteMessage(req, res) {
   try {
     const { messageId } = req.params;
@@ -50,5 +75,7 @@ module.exports = {
   createThread,
   getThreads,
   getMessages,
+  createMessage,
+  toggleUpvote,
   deleteMessage,
 };

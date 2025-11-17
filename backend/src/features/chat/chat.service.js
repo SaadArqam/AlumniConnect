@@ -38,6 +38,22 @@ async function createMessage({ threadId, authorId, content, parentId = null }) {
   return msg;
 }
 
+async function toggleUpvote({ messageId, userId }) {
+  const message = await prisma.message.findUnique({ where: { id: messageId } });
+  if (!message) throw new Error("Message not found");
+
+  const current = message.upvotes || [];
+  const has = current.includes(userId);
+  const next = has ? current.filter((u) => u !== userId) : [...current, userId];
+
+  const updated = await prisma.message.update({
+    where: { id: messageId },
+    data: { upvotes: next },
+  });
+
+  return updated;
+}
+
 async function deleteMessage({ messageId, requestingUserId }) {
   const message = await prisma.message.findUnique({ where: { id: messageId } });
   if (!message) throw new Error("Message not found");

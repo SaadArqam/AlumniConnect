@@ -35,10 +35,12 @@ Students can create detailed profiles including:
 - Search students by batch, skills, and interests  
 
 ### 💬 Chat & Collaboration
-- 1:1 chat  
-- Group discussions  
-- Reddit-style **thread-based discussions** (Q&A, career guidance, study groups)  
-- Real-time messaging via **Socket.io**
+- 1:1 chat
+- Group discussions
+- **Reddit-style open chat threads**: anyone can post, reply, and upvote
+- Infinite nested replies to threads (recursive message tree)
+- Upvotes for messages/comments (toggle, live)
+- Real-time messaging and live updates via **Socket.io**
 
 ### 🎯 Smart Recommendations
 - Suggested alumni based on interests, skills, and career journey
@@ -69,12 +71,13 @@ Students can create detailed profiles including:
 ---
 
 ## 🌟 Platform-Wide Highlights
-- 🔒 Verified users only (based on email domain)  
-- 🧵 Reddit-style threaded discussions  
-- 💬 Real-time chat using Socket.io  
-- 🧭 Structured mentorship flow  
-- 🏅 Gamification: badges like “Top Mentor”, “Rising Student”  
-- 👥 Groups for study, projects, hackathons, and clubs  
+- 🔒 Verified users only (based on email domain)
+- 🧵 Reddit-style threaded discussions (open to all, infinite nesting)
+- ▲ Upvotes for messages/comments (toggle, live)
+- 💬 Real-time chat and live updates using Socket.io
+- 🧭 Structured mentorship flow
+- 🏅 Gamification: badges like “Top Mentor”, “Rising Student”
+- 👥 Groups for study, projects, hackathons, and clubs
 
 ---
 
@@ -82,8 +85,8 @@ Students can create detailed profiles including:
 
 | Layer | Technology |
 |-------|------------|
-| **Frontend** | React.js + Tailwind CSS |
-| **Backend** | Node.js + Express.js |
+| **Frontend** | Next.js (React) + Tailwind CSS + socket.io-client + date-fns |
+| **Backend** | Node.js + Express.js + Socket.io |
 | **Database** | MongoDB Atlas (Prisma ORM) |
 | **Authentication** | JWT + College Email Domain Verification |
 | **Real-time Messaging** | Socket.io |
@@ -94,34 +97,39 @@ Students can create detailed profiles including:
 ## 🧩 Database Models (Prisma)
 
 Key models include:
-- **User** – student/alumni profile  
-- **Thread** – discussion topics  
-- **Message** – nested messages (parentId for replies)  
-- **Post** – job posts or announcements  
-- **Comment** – interactions on posts  
+- **User** – student/alumni profile
+- **Thread** – open chat threads (Reddit-style)
+- **Message** – nested messages (parentId for infinite replies, upvotes as array of userIds)
+- **Post** – job posts or announcements
+- **Comment** – interactions on posts
 
 MongoDB is managed through **Prisma ORM** for type-safe queries and schema validation.
 
 ---
 
 ## 🌱 MVP Scope
-- JWT authentication  
-- College email domain verification  
-- Profile creation  
-- Student ↔ Alumni messaging  
-- Group chat / threaded forum (Reddit-like)  
-- Job/referral posting  
-- Recommendations  
+- JWT authentication
+- College email domain verification
+- Profile creation
+- Student ↔ Alumni messaging
+- Group chat / threaded forum (Reddit-like)
+- **Open chat threads with infinite nested replies and upvotes**
+- Real-time updates via Socket.io
+- Job/referral posting
+- Recommendations
 
 ---
 
 ## 🔮 Future Enhancements
-- AI-based match recommendations  
-- Session scheduling with alumni  
-- Video mentorship calls  
-- Events & webinars  
-- Leaderboard & activity insights  
-- Advanced analytics for admins  
+- AI-based match recommendations
+- Session scheduling with alumni
+- Video mentorship calls
+- Events & webinars
+- Leaderboard & activity insights
+- Advanced analytics for admins
+- Pagination and "load more" for threads/messages
+- Optimistic UI for chat/upvotes
+- User avatars and profile links in chat
 
 ---
 

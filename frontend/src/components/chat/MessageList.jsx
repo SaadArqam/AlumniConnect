@@ -1,23 +1,36 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
+import MessageItem from "./MessageItem";
 
-export default function MessageList({ messages, currentUserId, typingUsers = [] }) {
+function buildTree(list) {
+  const map = {};
+  list.forEach((m) => (map[m.id] = { ...m, children: [] }));
+  const roots = [];
+  list.forEach((m) => {
+    if (m.parentId) {
+      const parent = map[m.parentId];
+      if (parent) parent.children.push(map[m.id]);
+      else roots.push(map[m.id]);
+    } else {
+      roots.push(map[m.id]);
+    }
+  });
+  return roots;
+}
+
+export default function MessageList({ messages, currentUserId, typingUsers = [], onReply, onToggleUpvote }) {
   const bottomRef = useRef(null);
 
   useEffect(() => {
     if (bottomRef.current) bottomRef.current.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const tree = useMemo(() => buildTree(messages || []), [messages]);
+
   return (
     <div className="flex-1 overflow-auto p-4 space-y-3 bg-gray-50">
-      {messages.map((m) => (
-        <div key={m.id} className={`flex ${m.authorId === currentUserId ? "justify-end" : "justify-start"}`}>
-          <div className={`max-w-[75%] p-2 rounded-lg ${m.authorId === currentUserId ? "bg-blue-500 text-white" : "bg-white text-gray-900 shadow"}`}>
-            <div className="text-sm font-medium">{m.author?.name || m.authorId}</div>
-            <div className="mt-1 whitespace-pre-wrap">{m.content}</div>
-            <div className="text-xs text-gray-400 mt-1">{new Date(m.createdAt).toLocaleString()}</div>
-          </div>
-        </div>
+      {tree.map((node) => (
+        <MessageItem key={node.id} node={node} currentUserId={currentUserId} onReply={onReply} onToggleUpvote={onToggleUpvote} />
       ))}
 
       {typingUsers.length > 0 && (

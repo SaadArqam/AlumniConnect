@@ -7,6 +7,8 @@ const verifyJWT = require("../auth/auth.service");
 router.post("/", verifyJWT, chatController.createThread);
 router.get("/", verifyJWT, chatController.getThreads);
 router.get("/:threadId/messages", verifyJWT, chatController.getMessages);
+router.post("/:threadId/messages", verifyJWT, chatController.createMessage);
+router.post("/messages/:messageId/upvote", verifyJWT, chatController.toggleUpvote);
 router.delete("/messages/:messageId", verifyJWT, chatController.deleteMessage);
 
 module.exports = router;
