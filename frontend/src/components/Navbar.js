@@ -1,48 +1,63 @@
 "use client";
-import { useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { Menu } from "lucide-react";
+import { useState } from "react";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
-    <nav className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <motion.nav
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-[#0a0a0b]/60 border-b border-white/10"
+    >
+      <div className="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center">
+        
+        {/* Logo */}
+        <Link href="/" className="text-white text-xl font-semibold tracking-wide">
+          AlumniConnect
+        </Link>
 
-          {/* Logo */}
-          <Link
-            href="/"
-            className="text-xl font-bold tracking-wide"
-          >
-            AlumniConnect
-          </Link>
-
-          {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-6 text-sm font-medium">
-            <Link href="/" className="hover:text-gray-300">Home</Link>
-            <Link href="/explore" className="hover:text-gray-300">Explore</Link>
-            <Link href="/login" className="hover:text-gray-300">Login</Link>
-          </div>
-
-          {/* Mobile Toggle */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-2xl focus:outline-none"
-          >
-            {isOpen ? "✖" : "☰"}
-          </button>
+        {/* Desktop Nav */}
+        <div className="hidden md:flex gap-6 text-gray-300">
+          <Link href="/" className="hover:text-white">Home</Link>
+          <Link href="/about" className="hover:text-white">About</Link>
+          <Link href="/contact" className="hover:text-white">Contact</Link>
         </div>
+
+        {/* Actions */}
+        <div className="hidden md:flex">
+          <Link
+            href="/login"
+            className="px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 transition text-white font-medium"
+          >
+            Login
+          </Link>
+        </div>
+
+        {/* Mobile Toggle */}
+        <button className="md:hidden" onClick={() => setOpen(!open)}>
+          <Menu className="w-6 h-6 text-gray-200" />
+        </button>
       </div>
 
       {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden bg-gray-800 px-4 py-3 space-y-2">
-          <Link href="/" className="block hover:text-gray-300">Home</Link>
-          <Link href="/explore" className="block hover:text-gray-300">Explore</Link>
-          <Link href="/login" className="block hover:text-gray-300">Login</Link>
+      {open && (
+        <div className="md:hidden bg-[#0b0b0c]/90 backdrop-blur-xl border-t border-white/10 px-6 py-4 space-y-3">
+          <Link href="/" className="block text-gray-300">Home</Link>
+          <Link href="/about" className="block text-gray-300">About</Link>
+          <Link href="/contact" className="block text-gray-300">Contact</Link>
+          <Link
+            href="/login"
+            className="block mt-2 w-full text-center py-2 rounded-xl bg-red-500 hover:bg-red-600 transition text-white"
+          >
+            Login
+          </Link>
         </div>
       )}
-    </nav>
+    </motion.nav>
   );
 }
