@@ -1,127 +1,144 @@
-# 🎓 AlumniConnect
+# 🎓 AlumniConnect — Verified Student & Alumni Networking Platform
 
-**AlumniConnect** is a verified networking and mentorship platform designed exclusively for college students and alumni.  
-It bridges the gap between students seeking career guidance and alumni offering mentorship, opportunities, and inspiration.
+**AlumniConnect** is a secure networking, mentorship, and collaboration platform designed exclusively for college students and alumni.  
+All users are verified through **college email domain authentication**, ensuring a trusted and authentic community.
 
 ---
 
 ## 🚀 Vision
-Empower students through real connections — by making alumni engagement effortless, structured, and high-impact.
+To build a verified network where alumni and students can meaningfully connect for mentorship, opportunities, collaboration, and career growth.
 
 ---
 
 ## ✨ Core Features
 
-### 🧑‍🎓 Students
-- **Login & Verification**
-  - Login via **LinkedIn** or **GitHub**
-  - Verify identity using **college email or ID**
-- **Profile & Interests**
-  - Auto-fill profile data (skills, education, experience) from LinkedIn/GitHub
-  - Add personal career interests and goals
-- **Alumni Search & Connection**
-  - Search alumni by: company, niche, higher studies, location, or journey tags
-  - Send connection or mentorship requests
-- **Student Search & Messaging**
-  - Discover peers by batch, skills, or interests
-  - Chat directly or create group discussions for collaboration and study
-- **Smart Recommendations**
-  - Suggested alumni to connect with based on profile similarity and shared interests
+---
+
+## 🧑‍🎓 Students
+
+### 🔐 Secure Login & Email Verification
+- JWT-based authentication  
+- Only verified college domain emails are allowed (e.g., `@college.edu`)  
+- Ensures a safe, gated community
+
+### 👤 Profile Creation
+Students can create detailed profiles including:
+- Education  
+- Skills  
+- Projects  
+- Bio  
+- Interests  
+- Career goals  
+
+### 🔍 Discover & Connect
+- Search alumni by company, domain, expertise, location, or higher studies  
+- Search students by batch, skills, and interests  
+
+### 💬 Chat & Collaboration
+- 1:1 chat  
+- Group discussions  
+- Reddit-style **thread-based discussions** (Q&A, career guidance, study groups)  
+- Real-time messaging via **Socket.io**
+
+### 🎯 Smart Recommendations
+- Suggested alumni based on interests, skills, and career journey
 
 ---
 
-### 🧑‍💼 Alumni
-- **Login & Profile Auto-Fill**
-  - Login via LinkedIn or GitHub
-  - Automatically fetch education, work experience, and skills
-- **Availability & Engagement Preferences**
-  - Define mentorship availability (days/hours)
-  - Choose engagement types: 1:1 chat, group guidance, or referrals only
-- **Mentorship Booking**
-  - Receive structured session requests from students
-  - Approve or decline mentorship slots
-- **Job & Internship Posting**
-  - Post openings directly for students/alumni
-  - Optionally share LinkedIn job postings or referral opportunities
-- **Alumni Networking**
-  - Connect with fellow alumni for collaboration, referrals, or professional growth
+## 🧑‍💼 Alumni
+
+### 🧾 Simple Onboarding
+- Create profile by verifying college email  
+- Add educational + professional background  
+- Define areas of help (career, higher studies, interview prep, referrals, etc.)
+
+### 📅 Mentorship Preferences
+- Choose availability  
+- Pick engagement type:  
+  - 1:1 chat  
+  - Group guidance  
+  - General Q&A threads  
+
+### 💼 Opportunities
+- Post job opportunities or internship referrals  
+- Share industry insights and guidance  
+
+### 🤝 Alumni Networking
+- Connect with fellow alumni for collaboration and growth  
 
 ---
 
-## 🌟 Platform-Wide Differentiators
-- ✅ **Verified Network** – Only students and alumni from the same institution
-- 🧭 **Structured Mentorship System** – Time-bound and spam-free
-- 🏷️ **Journey Tags & Smart Recommendations** – Match by interests, journey, or goals
-- 💬 **Student Groups** – Collaboration, project discussions, and peer learning
-- 🏆 **Gamification & Recognition**
-  - Earn badges like “Top Mentor” or “Active Student”
-  - Share achievements directly to LinkedIn
-- ⚡ **Low-Effort Alumni Engagement**
-  - One-click approvals, quick sessions, and impactful micro-interactions
-
----
-
-## ✅ MVP Focus
-- Student ↔ Alumni mentorship & connection
-- Student ↔ Student messaging & collaboration
-- Verified user onboarding
-- Job & referral postings
-- Simple, structured profiles for both roles
+## 🌟 Platform-Wide Highlights
+- 🔒 Verified users only (based on email domain)  
+- 🧵 Reddit-style threaded discussions  
+- 💬 Real-time chat using Socket.io  
+- 🧭 Structured mentorship flow  
+- 🏅 Gamification: badges like “Top Mentor”, “Rising Student”  
+- 👥 Groups for study, projects, hackathons, and clubs  
 
 ---
 
 ## 🛠️ Tech Stack
 
 | Layer | Technology |
-|-------|-------------|
+|-------|------------|
 | **Frontend** | React.js + Tailwind CSS |
-| **Backend** | Node.js + Express |
-| **Database** | MongoDB Atlas (via Prisma ORM) |
-| **Auth & Verification** | LinkedIn OAuth, GitHub OAuth, College Email |
-| **Messaging** | Socket.io (real-time chat & groups) |
-| **Hosting** | Vercel (Frontend) • Render / Railway (Backend) |
+| **Backend** | Node.js + Express.js |
+| **Database** | MongoDB Atlas (Prisma ORM) |
+| **Authentication** | JWT + College Email Domain Verification |
+| **Real-time Messaging** | Socket.io |
+| **Deployment** | Vercel (Frontend), Render/Railway (Backend) |
 
 ---
 
-## 🧩 Prisma Schema Overview
+## 🧩 Database Models (Prisma)
 
-- **User** (Student / Alumni)
-  - Personal details, education, experience, and social links
-- **Post**
-  - Job postings, updates, and referral links
-- **Comment**
-  - Feedback and engagement on posts
+Key models include:
+- **User** – student/alumni profile  
+- **Thread** – discussion topics  
+- **Message** – nested messages (parentId for replies)  
+- **Post** – job posts or announcements  
+- **Comment** – interactions on posts  
 
-MongoDB is managed through Prisma ORM for type-safe queries and schema validation.
-
----
-
-## 🧠 Future Enhancements
-- AI-based mentor recommendations
-- Session feedback & analytics
-- Video mentorship integration
-- Event & webinar modules
-- Alumni engagement leaderboard
+MongoDB is managed through **Prisma ORM** for type-safe queries and schema validation.
 
 ---
 
-## 🧑‍💻 Contributors
-- **Saad Arqam** — Developer & Designer  
-  [GitHub](https://github.com/SaadArqam) | [LinkedIn](https://linkedin.com/in/saadarqam)
-  
-- **Priyabrata Singh** — Developer & Designer  
-  [GitHub](https://github.com/CodyBrat) | [LinkedIn](https://linkedin.com/in/saadarqam)
+## 🌱 MVP Scope
+- JWT authentication  
+- College email domain verification  
+- Profile creation  
+- Student ↔ Alumni messaging  
+- Group chat / threaded forum (Reddit-like)  
+- Job/referral posting  
+- Recommendations  
 
-- **Premansh Behl** — Developer & Designer  
-  [GitHub](https://github.com/PremanshBehl) | [LinkedIn](https://linkedin.com/in/saadarqam)
-  
-- **Pathan Amaan** — Developer & Designer  
-  [GitHub](https://github.com/Amaan-pathan) | [LinkedIn](https://linkedin.com/in/saadarqam)
+---
+
+## 🔮 Future Enhancements
+- AI-based match recommendations  
+- Session scheduling with alumni  
+- Video mentorship calls  
+- Events & webinars  
+- Leaderboard & activity insights  
+- Advanced analytics for admins  
+
+---
+
+## 👥 Contributors
+
+| Name | Role | GitHub |
+|------|------|---------|
+| **Saad Arqam** | Developer & Designer | https://github.com/SaadArqam |
+| **Priyabrata Singh** | Developer & Designer | https://github.com/CodyBrat |
+| **Premansh Behl** | Developer & Designer | https://github.com/PremanshBehl |
+| **Pathan Amaan** | Developer & Designer | https://github.com/Amaan-pathan |
+
 ---
 
 ## 📄 License
-This project is licensed under the **MIT License** — free to use and modify with attribution.
+This project is licensed under the **MIT License**.
 
 ---
 
-### ⭐ If you like this project, consider starring the repo to support development!
+### ⭐ If you found this project useful, please consider giving it a star on GitHub!
