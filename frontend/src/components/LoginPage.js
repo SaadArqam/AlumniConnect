@@ -1,24 +1,70 @@
 "use client";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 import { Mail, Lock, Apple, Github, Chrome } from "lucide-react";
 
 export default function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const registered = searchParams?.get?.("registered") === "1";
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     setError(null);
-
-    if (!email.includes("@")) return setError("Enter a valid email address");
+    
+  if (!email.includes("@")) return setError("Enter a valid email address");
     if (password.length < 6) return setError("Password must be at least 6 characters");
+  if (!isLogin && !name.trim()) return setError("Please enter your name");
 
-    console.log(isLogin ? "Logging in..." : "Signing up...");
-  };
+    setLoading(true);
+    try {
+      const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
+      if (!isLogin) {
+        // register only, then redirect to login page
+        const regRes = await fetch(base + "/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password }),
+        });
+        const regJson = await regRes.json();
+        if (!regRes.ok) throw new Error(regJson.error || "Registration failed");
+
+        // Registration successful - redirect to login with a success flag
+        router.push("/login?registered=1");
+        return;
+      }
+
+      // login
+      const res = await fetch(base + "/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Login failed");
+
+      // store token and redirect to home
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
+
+      router.push("/");
+    } catch (err) {
+      setError(err.message || "Server error");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0c0c0d] px-4">
@@ -37,7 +83,25 @@ export default function AuthForm() {
           {isLogin ? "Sign in to continue" : "Create your account"}
         </p>
 
+        {registered && (
+          <div className="mb-4 text-center text-sm text-green-400">Registration successful — please login.</div>
+        )}
+
         <form onSubmit={handleSubmit} className="relative z-10 space-y-4">
+          {!isLogin && (
+            <div>
+              <label className="text-gray-400 text-sm">Name</label>
+              <div className="flex items-center bg-[#1b1c1e] mt-1 px-4 py-3 rounded-xl border border-white/5 focus-within:border-red-500/40">
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-transparent text-gray-200 focus:outline-none"
+                />
+              </div>
+            </div>
+          )}
+
           <div>
             <label className="text-gray-400 text-sm">Email</label>
             <div className="flex items-center bg-[#1b1c1e] mt-1 px-4 py-3 rounded-xl border border-white/5 focus-within:border-red-500/40">
@@ -76,9 +140,10 @@ export default function AuthForm() {
 
           <button
             type="submit"
-            className="w-full h-12 rounded-xl bg-red-500 hover:bg-red-600 transition font-medium text-white"
+            disabled={loading}
+            className="w-full h-12 rounded-xl bg-red-500 hover:bg-red-600 transition font-medium text-white disabled:opacity-60"
           >
-            {isLogin ? "Login" : "Create Account"}
+            {loading ? "Please wait..." : isLogin ? "Login" : "Create Account"}
           </button>
         </form>
 
