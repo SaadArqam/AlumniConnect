@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useCallback } from "react";
+import PropTypes from "prop-types";
+import { Send, Reply } from "lucide-react";
 
 export default function MessageInput({ threadId, socket, parentId = null, onSent, placeholder = "Write a message..." }) {
   const [value, setValue] = useState("");
@@ -33,17 +35,41 @@ export default function MessageInput({ threadId, socket, parentId = null, onSent
   };
 
   return (
-    <form onSubmit={send} className="p-3 bg-white border-t flex gap-2">
-      <textarea
-        className="flex-1 p-2 border rounded resize-none"
-        rows={2}
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) send(e); }}
-        onInput={onType}
-        placeholder={placeholder}
-      />
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Send</button>
+    <form onSubmit={send} className="flex flex-col gap-2 p-3 bg-gray-800/30 backdrop-blur-lg rounded-3xl border border-gray-700 shadow-lg">
+      {parentId && (
+        <div className="flex items-center text-sm text-gray-300 mb-2">
+          <Reply size={16} className="mr-2 text-blue-400" />
+          Replying to a message...
+        </div>
+      )}
+      <div className="flex items-center gap-2">
+        <textarea
+          className="flex-1 p-3 border border-gray-700 bg-gray-900/50 backdrop-blur-sm rounded-2xl resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-100 placeholder-gray-400 transition duration-200 ease-in-out shadow-inner"
+          rows={1}
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value);
+            onType();
+          }}
+          onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) send(e); }} 
+          placeholder={placeholder}
+        />
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-3 rounded-full flex items-center justify-center hover:bg-blue-700 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg"
+          aria-label="Send message"
+        >
+          <Send size={20} />
+        </button>
+      </div>
     </form>
   );
 }
+
+MessageInput.propTypes = {
+  threadId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  socket: PropTypes.object,
+  parentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onSent: PropTypes.func,
+  placeholder: PropTypes.string,
+};

@@ -127,55 +127,55 @@ export default function ChatWindow() {
   const currentUserId = decoded?.userId ?? null;
 
   return (
-    <div className="h-screen flex">
-      <aside className="w-80 border-r p-4 bg-white">
+    <div className="h-[calc(100vh-8rem)] flex rounded-3xl shadow-2xl overflow-hidden bg-gray-800/20 backdrop-blur-xl border border-gray-700">
+      {/* Sidebar for Threads */}
+      <aside className="w-80 bg-gray-900/30 backdrop-blur-lg border-r border-gray-700 flex flex-col p-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">Threads</h2>
+          <h2 className="text-xl font-bold text-gray-100">Threads</h2>
           <button
             onClick={() => {
-              const title = prompt("Thread title:");
+              const title = prompt("Enter new thread title:");
               if (title) createThread(title);
             }}
-            className="text-sm text-blue-600"
+            className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200 ease-in-out shadow-md"
           >
-            New
+            New Thread
           </button>
         </div>
-
-        <div className="space-y-2">
+        <div className="flex-1 overflow-y-auto space-y-2 pr-2">
           {threads.map((t) => (
-            <div key={t.id} onClick={() => openThread(t.id)} className={`p-2 rounded cursor-pointer ${currentThread === t.id ? 'bg-gray-100' : ''}`}>
-              <div className="font-medium">{t.title}</div>
-              <div className="text-xs text-gray-500">{t.createdBy?.name || t.createdById}</div>
+            <div
+              key={t.id}
+              onClick={() => openThread(t.id)}
+              className={`p-3 rounded-2xl cursor-pointer transition duration-200 ease-in-out
+                ${currentThread === t.id ? 'bg-blue-600/50 text-white shadow-lg' : 'bg-gray-700/30 hover:bg-gray-600/50 text-gray-200'}`}
+            >
+              <div className="font-semibold text-lg">{t.title}</div>
+              <div className="text-sm text-gray-300">by {t.createdBy?.name || t.createdById}</div>
             </div>
           ))}
         </div>
       </aside>
 
-      <main className="flex-1 flex flex-col">
-        <div className="flex-1 flex flex-col">
-          {currentThread ? (
-            <>
-              <div className="flex-1 flex flex-col">
-                {/* top input */}
-                <div className="p-2 bg-white">
-                  <MessageInput threadId={currentThread} socket={socket} parentId={replyTo} onSent={handleSent} placeholder={replyTo ? 'Replying...' : 'Post a comment...'} />
-                </div>
+      {/* Main Chat Area */}
+      <main className="flex-1 flex flex-col bg-gray-800/10 backdrop-blur-sm">
+        {currentThread ? (
+          <>
+            {/* Message List */}
+            <div className="flex-1 overflow-y-auto p-4">
+              <MessageList messages={messages} currentUserId={currentUserId} typingUsers={typingUsers} onReply={handleReply} onToggleUpvote={handleToggleUpvote} />
+            </div>
 
-                <div className="flex-1">
-                  <MessageList messages={messages} currentUserId={currentUserId} typingUsers={typingUsers} onReply={handleReply} onToggleUpvote={handleToggleUpvote} />
-                </div>
-
-                {/* bottom input */}
-                <div>
-                  <MessageInput threadId={currentThread} socket={socket} parentId={replyTo} onSent={handleSent} placeholder={replyTo ? 'Replying...' : 'Post a comment...'} />
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="flex-1 flex items-center justify-center text-gray-400">Select or create a thread to start chatting</div>
-          )}
-        </div>
+            {/* Message Input */}
+            <div className="p-4 border-t border-gray-700 bg-gray-900/30 backdrop-blur-lg">
+              <MessageInput threadId={currentThread} socket={socket} parentId={replyTo} onSent={handleSent} placeholder={replyTo ? 'Replying...' : 'Post a comment...'} />
+            </div>
+          </>
+        ) : (
+          <div className="flex-1 flex items-center justify-center text-gray-400 text-xl font-semibold">
+            Select or create a thread to start chatting
+          </div>
+        )}
       </main>
     </div>
   );
