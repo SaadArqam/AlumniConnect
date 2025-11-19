@@ -29,13 +29,13 @@ export default function MessageList({ messages, currentUserId, typingUsers = [],
   const tree = useMemo(() => buildTree(messages || []), [messages]);
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-white to-blue-50 rounded-lg">
+    <div className="flex flex-col h-full overflow-y-auto p-4 space-y-4 bg-gray-900/10 backdrop-blur-sm rounded-3xl">
       {tree.map((node) => (
         <MessageItem key={node.id} node={node} currentUserId={currentUserId} onReply={onReply} onToggleUpvote={onToggleUpvote} />
       ))}
 
       {typingUsers.length > 0 && (
-        <div className="inline-flex items-center text-xs text-blue-700 px-2 py-1 bg-blue-50 rounded-md self-start">
+        <div className="text-xs text-gray-400 px-3 py-2 bg-gray-700/50 backdrop-blur-md rounded-full inline-flex items-center self-start animate-pulse shadow-inner">
           <span className="mr-2">•••</span>
           {typingUsers.length === 1 ? "Someone is typing..." : "Several people are typing..."}
         </div>

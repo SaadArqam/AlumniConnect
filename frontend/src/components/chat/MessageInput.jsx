@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
-import { Send, Reply } from "lucide-react"; // Assuming lucide-react is available for icons
+import { Send, Reply } from "lucide-react";
 
 export default function MessageInput({ threadId, socket, parentId = null, onSent, placeholder = "Write a message..." }) {
   const [value, setValue] = useState("");
@@ -35,28 +35,28 @@ export default function MessageInput({ threadId, socket, parentId = null, onSent
   };
 
   return (
-    <form onSubmit={send} className="flex flex-col gap-2 p-3 bg-gradient-to-r from-white to-blue-50 rounded-lg border border-blue-200">
+    <form onSubmit={send} className="flex flex-col gap-2 p-3 bg-gray-800/30 backdrop-blur-lg rounded-3xl border border-gray-700 shadow-lg">
       {parentId && (
-        <div className="flex items-center text-xs text-blue-700 mb-2">
-          <Reply size={14} className="mr-2" />
-          Replying…
+        <div className="flex items-center text-sm text-gray-300 mb-2">
+          <Reply size={16} className="mr-2 text-blue-400" />
+          Replying to a message...
         </div>
       )}
       <div className="flex items-center gap-2">
         <textarea
-          className="flex-1 p-3 border border-blue-200 bg-white rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-blue-600 transition duration-200 ease-in-out"
+          className="flex-1 p-3 border border-gray-700 bg-gray-900/50 backdrop-blur-sm rounded-2xl resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-100 placeholder-gray-400 transition duration-200 ease-in-out shadow-inner"
           rows={1}
           value={value}
           onChange={(e) => {
             setValue(e.target.value);
             onType();
           }}
-          onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) send(e); }}
+          onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) send(e); }} 
           placeholder={placeholder}
         />
         <button
           type="submit"
-          className="px-4 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white inline-flex items-center justify-center hover:from-blue-700 hover:to-blue-600 transition-transform duration-200 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-blue-600 text-white px-4 py-3 rounded-full flex items-center justify-center hover:bg-blue-700 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg"
           aria-label="Send message"
         >
           <Send size={20} />
