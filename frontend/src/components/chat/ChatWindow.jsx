@@ -4,6 +4,7 @@ import useSocket from "../../hooks/useSocket";
 import { getSocket } from "../../utils/socket";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
+import NewThreadModal from "./NewThreadModal"; // Import the new modal component
 
 export default function ChatWindow() {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
@@ -12,6 +13,7 @@ export default function ChatWindow() {
   const [currentThread, setCurrentThread] = useState(null);
   const [messages, setMessages] = useState([]);
   const [typingUsers, setTypingUsers] = useState([]);
+  const [isNewThreadModalOpen, setIsNewThreadModalOpen] = useState(false); // State for modal visibility
 
   useEffect(() => {
     if (!token) return;
@@ -133,10 +135,7 @@ export default function ChatWindow() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-gray-100">Threads</h2>
           <button
-            onClick={() => {
-              const title = prompt("Enter new thread title:");
-              if (title) createThread(title);
-            }}
+            onClick={() => setIsNewThreadModalOpen(true)} // Open the modal
             className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200 ease-in-out shadow-md"
           >
             New Thread
@@ -177,6 +176,13 @@ export default function ChatWindow() {
           </div>
         )}
       </main>
+
+      {/* New Thread Modal */}
+      <NewThreadModal
+        isOpen={isNewThreadModalOpen}
+        onClose={() => setIsNewThreadModalOpen(false)}
+        onCreateThread={createThread}
+      />
     </div>
   );
 }
