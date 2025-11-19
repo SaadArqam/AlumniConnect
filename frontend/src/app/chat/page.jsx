@@ -13,7 +13,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 font-sans">
+    <div className="min-h-screen bg-gradient-to-b from-black via-indigo-900 to-blue-500 text-gray-100 font-sans">
       <header className="p-4 bg-gray-800/30 backdrop-blur-md border-b border-gray-700 shadow-lg">
         <div className="container mx-auto font-semibold text-lg text-gray-100">AlumniConnect — Chat</div>
       </header>
