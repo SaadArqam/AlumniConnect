@@ -127,17 +127,17 @@ export default function ChatWindow() {
   const currentUserId = decoded?.userId ?? null;
 
   return (
-    <div className="flex h-[calc(100vh-8rem)] rounded-lg shadow-xl overflow-hidden bg-gray-800 border border-gray-700">
+    <div className="flex h-[calc(100vh-8rem)] rounded-xl shadow-xl overflow-hidden bg-gradient-to-br from-white via-blue-50 to-blue-100 border border-blue-200">
       {/* Sidebar for Threads */}
-      <aside className="w-80 bg-gray-900 border-r border-gray-700 flex flex-col">
-        <div className="p-4 border-b border-gray-700 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-white">Threads</h2>
+      <aside className="w-80 bg-gradient-to-b from-blue-50 to-white border-r border-blue-200 flex flex-col">
+        <div className="p-4 border-b border-blue-200 flex items-center justify-between">
+          <h2 className="text-xl font-bold text-blue-700">Threads</h2>
           <button
             onClick={() => {
               const title = prompt("Enter new thread title:");
               if (title) createThread(title);
             }}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200 ease-in-out"
+            className="px-4 py-2 rounded-md bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:from-blue-700 hover:to-blue-600 transition duration-200 ease-in-out"
           >
             New Thread
           </button>
@@ -147,18 +147,18 @@ export default function ChatWindow() {
             <div
               key={t.id}
               onClick={() => openThread(t.id)}
-              className={`p-3 rounded-md cursor-pointer transition duration-200 ease-in-out
-                ${currentThread === t.id ? 'bg-blue-700 text-white shadow-md' : 'bg-gray-800 hover:bg-gray-700 text-gray-300'}`}
+              className={`p-3 rounded-md cursor-pointer transition-colors duration-200 ease-in-out
+                ${currentThread === t.id ? 'bg-blue-100 border border-blue-200 text-blue-800 shadow-sm' : 'bg-white hover:bg-blue-50 text-blue-700 border border-transparent'}`}
             >
-              <div className="font-semibold text-lg">{t.title}</div>
-              <div className="text-sm text-gray-400">by {t.createdBy?.name || t.createdById}</div>
+              <div className="font-semibold text-lg text-blue-800">{t.title}</div>
+              <div className="text-sm text-blue-600">by {t.createdBy?.name || t.createdById}</div>
             </div>
           ))}
         </div>
       </aside>
 
       {/* Main Chat Area */}
-      <main className="flex-1 flex flex-col bg-gray-800">
+      <main className="flex-1 flex flex-col bg-transparent">
         {currentThread ? (
           <>
             {/* Message List */}
@@ -167,12 +167,12 @@ export default function ChatWindow() {
             </div>
 
             {/* Message Input */}
-            <div className="p-4 border-t border-gray-700 bg-gray-900">
+            <div className="p-4 border-t border-blue-200 bg-gradient-to-r from-white to-blue-50">
               <MessageInput threadId={currentThread} socket={socket} parentId={replyTo} onSent={handleSent} placeholder={replyTo ? 'Replying...' : 'Post a comment...'} />
             </div>
           </>
         ) : (
-          <div className="flex-1 flex items-center justify-center text-gray-500 text-xl font-semibold">
+          <div className="flex-1 flex items-center justify-center text-blue-700 text-xl font-semibold">
             Select or create a thread to start chatting
           </div>
         )}
