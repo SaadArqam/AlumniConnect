@@ -43,6 +43,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use("/auth", authRouter);
 app.use("/users", userRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/threads", threadRoutes);
 app.use("/api/chat", chatRoutes);
 

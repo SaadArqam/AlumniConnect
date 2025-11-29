@@ -9,6 +9,17 @@ exports.getMe = async (req, res) => {
   }
 };
 
+exports.saveProfile = async (req, res) => {
+  try {
+    const user = await userService.saveProfile(req.user.userId, req.body);
+    return res.json(user);
+  } catch (error) {
+    console.error(error);
+    const status = error.statusCode || 500;
+    return res.status(status).json({ message: error.message || "Error saving profile" });
+  }
+};
+
 exports.setRole = async (req, res) => {
   try {
     const { role } = req.body;
@@ -36,6 +47,17 @@ exports.updateProfile = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Error updating profile" });
+  }
+};
+
+exports.saveProfile = async (req, res) => {
+  try {
+    const user = await userService.saveProfile(req.user.userId, req.body);
+    return res.json(user);
+  } catch (error) {
+    console.error(error);
+    const status = error.statusCode || 500;
+    return res.status(status).json({ message: error.message || "Error saving profile" });
   }
 };
 

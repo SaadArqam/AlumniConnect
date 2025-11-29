@@ -10,9 +10,10 @@ router.get("/me", authMiddleware, userController.getMe);
 // Set role after login (Student / Alumni)
 router.put("/set-role", authMiddleware, userController.setRole);
 
-// Update full profile based on role
+// Legacy update endpoint (kept for backward compatibility)
 router.put("/update-profile", authMiddleware, userController.updateProfile);
-// (No alias) keep canonical route as /users/update-profile
+// Create or update profile with role-aware payload
+router.post("/profile", authMiddleware, userController.saveProfile);
 
 // Get user by ID
 router.get("/:id", userController.getUserById);
