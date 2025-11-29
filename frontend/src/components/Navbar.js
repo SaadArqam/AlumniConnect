@@ -50,6 +50,9 @@ export default function Navbar() {
           <Link href="/chat" className="hover:text-white">Chat</Link>
           <Link href="/about" className="hover:text-white">About</Link>
           <Link href="/contact" className="hover:text-white">Contact</Link>
+          {token && (
+            <Link href="/profile" className="hover:text-white">Profile</Link>
+          )}
         </div>
 
         {/* Actions */}
@@ -62,9 +65,12 @@ export default function Navbar() {
               Login
             </Link>
           ) : (
-            <button onClick={handleLogout} className="px-4 py-2 rounded-xl bg-gray-700 hover:bg-gray-600 transition text-white font-medium">
-              Logout
-            </button>
+            <>
+              <Link href="/profile" className="px-4 py-2 mr-3 rounded-xl bg-gray-800 hover:bg-gray-700 transition text-white font-medium">Profile</Link>
+              <button onClick={handleLogout} className="px-4 py-2 rounded-xl bg-gray-700 hover:bg-gray-600 transition text-white font-medium">
+                Logout
+              </button>
+            </>
           )}
         </div>
 
@@ -88,9 +94,12 @@ export default function Navbar() {
               Login
             </Link>
           ) : (
-            <button onClick={handleLogout} className="block mt-2 w-full text-center py-2 rounded-xl bg-gray-700 hover:bg-gray-600 transition text-white">
-              Logout
-            </button>
+            <>
+              <Link href="/profile" className="block text-gray-300">Profile</Link>
+              <button onClick={handleLogout} className="block mt-2 w-full text-center py-2 rounded-xl bg-gray-700 hover:bg-gray-600 transition text-white">
+                Logout
+              </button>
+            </>
           )}
         </div>
       )}

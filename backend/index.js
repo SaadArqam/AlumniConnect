@@ -11,6 +11,7 @@ const authRouter = require("./src/features/auth/auth.controller");
 const threadRoutes = require("./src/features/threads/threads.routes");
 const chatSocket = require("./src/features/chat/chat.socket");
 const chatRoutes = require("./src/features/chat/chat.routes");
+const userRoutes = require("./src/features/user/user.routes");
 const verifyJWT = require("./src/features/auth/auth.service");
 
 const app = express();
@@ -41,6 +42,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use("/auth", authRouter);
+app.use("/users", userRoutes);
 app.use("/api/threads", threadRoutes);
 app.use("/api/chat", chatRoutes);
 
