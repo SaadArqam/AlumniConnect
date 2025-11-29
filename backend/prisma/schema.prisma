@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,31 +8,74 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// model User {
+//   id              String       @id @default(auto()) @map("_id") @db.ObjectId
+//   name            String
+//   email           String       @unique
+//   password        String
+//   bio             String?
+//   profilePic      String?
+//   graduationYear  Int?
+//   branch          String?
+//   degree          String?
+//   college         String?
+//   cgpa            Float?
+//   company         String?
+//   position        String?
+//   experienceYears Int?
+//   skills          String[]
+//   interests       String[]
+//   socialLinks     SocialLinks?
+//   connections     String[] // store User IDs as ObjectId strings
+//   posts           Post[]
+//   comments        Comment[] // ✅ added this line
+//   createdAt       DateTime     @default(now())
+
+//   threads  Thread[] // ✅ REQUIRED FIX
+//   messages Message[] // ✅ REQUIRED FIX
+// }
+
+//created for different roles
 model User {
   id              String       @id @default(auto()) @map("_id") @db.ObjectId
   name            String
   email           String       @unique
   password        String
+
+  role            Role?        // 👈 ADDED
+
+  // Student fields
   bio             String?
-  profilePic      String?
   graduationYear  Int?
   branch          String?
   degree          String?
   college         String?
   cgpa            Float?
+
+  // Alumni fields
   company         String?
   position        String?
   experienceYears Int?
+
+  // Common
+  profilePic      String?
+  // JSON profile object to store role-specific fields
+  profile         Json?
   skills          String[]
   interests       String[]
   socialLinks     SocialLinks?
-  connections     String[] // store User IDs as ObjectId strings
+  connections     String[]
   posts           Post[]
-  comments        Comment[] // ✅ added this line
+  comments        Comment[]
   createdAt       DateTime     @default(now())
 
-  threads  Thread[] // ✅ REQUIRED FIX
-  messages Message[] // ✅ REQUIRED FIX
+  threads         Thread[]
+  messages        Message[]
+}
+
+enum Role {
+  STUDENT
+  ALUMNI
 }
 
 type SocialLinks {
