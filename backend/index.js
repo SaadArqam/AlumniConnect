@@ -13,6 +13,7 @@ const chatSocket = require("./src/features/chat/chat.socket");
 const chatRoutes = require("./src/features/chat/chat.routes");
 const userRoutes = require("./src/features/user/user.routes");
 const verifyJWT = require("./src/features/auth/auth.service");
+const postRoutes = require("./routes/postRoutes");
 
 const app = express();
 // Configure CORS: in development reflect the request origin so multiple localhost ports work.
@@ -46,6 +47,7 @@ app.use("/users", userRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/threads", threadRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/posts", postRoutes);
 
 // one shared HTTP server
 const server = http.createServer(app);
@@ -85,7 +87,7 @@ app.get("/api/profile", verifyJWT, async (req, res) => {
 });
 
 // START SERVER 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log(`✅ Server + Socket.IO running on port ${PORT}`);
 });

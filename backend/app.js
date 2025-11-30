@@ -18,6 +18,9 @@ const app = express();
 
 app.use(express.json());
 
+const postRoutes = require("./src/features/posts/post.routes");
+app.use("/posts", postRoutes);
+
 // ROUTES
 const authRoutes = require("./jwt/register+login");  // ✔ correct
 app.use("/auth", authRoutes);

@@ -89,6 +89,7 @@ model Post {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   authorId  String    @db.ObjectId
   author    User      @relation(fields: [authorId], references: [id])
+  title     String
   content   String
   imageUrl  String?
   createdAt DateTime  @default(now())

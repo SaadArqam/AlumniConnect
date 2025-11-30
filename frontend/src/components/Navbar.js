@@ -11,7 +11,8 @@ export default function Navbar() {
   const router = useRouter();
 
   useEffect(() => {
-    const t = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const t =
+      typeof window !== "undefined" ? localStorage.getItem("token") : null;
     setToken(t);
 
     function onStorage(e) {
@@ -38,7 +39,6 @@ export default function Navbar() {
       className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-[#0a0a0b]/60 border-b border-white/10"
     >
       <div className="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center">
-        
         {/* Logo */}
         <Link href="/" className="text-white text-xl font-semibold tracking-wide">
           AlumniConnect
@@ -50,8 +50,12 @@ export default function Navbar() {
           <Link href="/chat" className="hover:text-white">Chat</Link>
           <Link href="/about" className="hover:text-white">About</Link>
           <Link href="/contact" className="hover:text-white">Contact</Link>
+
           {token && (
-            <Link href="/profile" className="hover:text-white">Profile</Link>
+            <>
+              <Link href="/posts" className="hover:text-white">Posts</Link> {/* fixed */}
+              <Link href="/profile" className="hover:text-white">Profile</Link>
+            </>
           )}
         </div>
 
@@ -65,12 +69,12 @@ export default function Navbar() {
               Login
             </Link>
           ) : (
-            <>
-              {/* <Link href="/profile" className="px-4 py-2 mr-3 rounded-xl bg-gray-800 hover:bg-gray-700 transition text-white font-medium">Profile</Link> */}
-              <button onClick={handleLogout} className="px-4 py-2 rounded-xl bg-gray-700 hover:bg-gray-600 transition text-white font-medium">
-                Logout
-              </button>
-            </>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 rounded-xl bg-gray-700 hover:bg-gray-600 transition text-white font-medium"
+            >
+              Logout
+            </button>
           )}
         </div>
 
@@ -86,6 +90,14 @@ export default function Navbar() {
           <Link href="/" className="block text-gray-300">Home</Link>
           <Link href="/chat" className="block text-gray-300">Chat</Link>
           <Link href="/about" className="block text-gray-300">About</Link>
+
+          {token && (
+            <>
+              <Link href="/posts" className="block text-gray-300">Posts</Link> {/* fixed */}
+              <Link href="/profile" className="block text-gray-300">Profile</Link>
+            </>
+          )}
+
           {!token ? (
             <Link
               href="/login"
@@ -94,12 +106,12 @@ export default function Navbar() {
               Login
             </Link>
           ) : (
-            <>
-              {/* <Link href="/profile" className="block text-gray-300">Profile</Link> */}
-              <button onClick={handleLogout} className="block mt-2 w-full text-center py-2 rounded-xl bg-gray-700 hover:bg-gray-600 transition text-white">
-                Logout
-              </button>
-            </>
+            <button
+              onClick={handleLogout}
+              className="block mt-2 w-full text-center py-2 rounded-xl bg-gray-700 hover:bg-gray-600 transition text-white"
+            >
+              Logout
+            </button>
           )}
         </div>
       )}

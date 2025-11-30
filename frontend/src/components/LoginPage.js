@@ -58,6 +58,10 @@ export default function AuthForm() {
         localStorage.setItem("token", data.token);
       }
 
+      if (data.user?.id) {
+        localStorage.setItem("userId", data.user.id);
+      }
+
       router.push("/");
     } catch (err) {
       setError(err.message || "Server error");
