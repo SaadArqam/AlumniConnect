@@ -66,7 +66,7 @@ export default function Navbar() {
             </Link>
           ) : (
             <>
-              <Link href="/profile" className="px-4 py-2 mr-3 rounded-xl bg-gray-800 hover:bg-gray-700 transition text-white font-medium">Profile</Link>
+              {/* <Link href="/profile" className="px-4 py-2 mr-3 rounded-xl bg-gray-800 hover:bg-gray-700 transition text-white font-medium">Profile</Link> */}
               <button onClick={handleLogout} className="px-4 py-2 rounded-xl bg-gray-700 hover:bg-gray-600 transition text-white font-medium">
                 Logout
               </button>
@@ -95,7 +95,7 @@ export default function Navbar() {
             </Link>
           ) : (
             <>
-              <Link href="/profile" className="block text-gray-300">Profile</Link>
+              {/* <Link href="/profile" className="block text-gray-300">Profile</Link> */}
               <button onClick={handleLogout} className="block mt-2 w-full text-center py-2 rounded-xl bg-gray-700 hover:bg-gray-600 transition text-white">
                 Logout
               </button>
