@@ -29,6 +29,16 @@ export default function PostsPage() {
     setPosts((prev) => [newPost, ...prev]);
   };
 
+  const handleCommentAdded = async (postId) => {
+    // Reload posts to get updated comment count
+    try {
+      const data = await api.get("/posts");
+      setPosts(data);
+    } catch (error) {
+      console.error("Failed to reload posts:", error);
+    }
+  };
+
   const handleLike = async (postId) => {
     try {
       const userId = localStorage.getItem("userId");
@@ -93,7 +103,12 @@ export default function PostsPage() {
           ) : (
             <div className="space-y-6">
               {posts.map((post) => (
-                <PostCard key={post.id} post={post} onLike={handleLike} />
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  onLike={handleLike}
+                  onCommentAdded={handleCommentAdded}
+                />
               ))}
             </div>
           )}

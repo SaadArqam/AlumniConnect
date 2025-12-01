@@ -15,6 +15,7 @@ const userRoutes = require("./src/features/user/user.routes");
 const verifyJWT = require("./src/features/auth/auth.service");
 // Use the new Prisma-based posts feature routes
 const postRoutes = require("./src/features/posts/post.routes");
+const commentRoutes = require("./src/features/comments/comments.routes");
 
 const app = express();
 // Configure CORS: in development reflect the request origin so multiple localhost ports work.
@@ -49,6 +50,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/threads", threadRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/posts", postRoutes);
+app.use("/api", commentRoutes);
 
 // one shared HTTP server
 const server = http.createServer(app);

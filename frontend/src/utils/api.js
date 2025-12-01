@@ -38,6 +38,21 @@ const api = {
     });
     return handleResponse(res);
   },
+
+  delete: async (url, body) => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const headers = { "Content-Type": "application/json" };
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    const res = await fetch(`${API_BASE}${url}`, {
+      method: "DELETE",
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    return handleResponse(res);
+  },
 };
 
 export default api;
