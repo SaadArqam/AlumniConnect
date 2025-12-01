@@ -1,46 +1,134 @@
 "use client";
 import Link from 'next/link';
-import { Users2 } from 'lucide-react';
+import { Users2, MessageCircle, FileText, User, TrendingUp, Calendar } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 const LandingPage = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+      const name = localStorage.getItem('userName') || 'User';
+      setIsAuthenticated(!!token);
+      setUserName(name);
+    }
+  }, []);
+
   return (
     <div className="relative min-h-screen bg-white">
+      {/* Hero Section */}
       <section
-        className="relative min-h-[100vh] flex items-start justify-center px-6 pt-25 pb-24 bg-cover bg-no-repeat"
-        style={{
-          backgroundImage: 'url(/landingpage.png)',
-          backgroundPosition: '85% center',
-        }}
+        className="relative min-h-[100vh] flex items-start justify-center px-6 pt-25 pb-24 overflow-hidden"
       >
+        {/* Background Image Layer with Fade-In */}
+        <div
+          className="absolute inset-0 bg-cover bg-no-repeat animate-fadeIn"
+          style={{
+            backgroundImage: 'url(/landingpage2.png)',
+            backgroundPosition: '85% center',
+          }}
+        />
+
         <div className="absolute inset-0 bg-black/10"></div>
 
         <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-5 text-slate-900 leading-tight tracking-tight">
-            Find Your Tribe,<br />
-            Build Your Network.
-          </h1>
+          {!isAuthenticated ? (
+            <>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-5 text-slate-900 leading-tight tracking-tight">
+                Find Your Tribe,<br />
+                Build Your Network.
+              </h1>
 
-          <p className="text-sm sm:text-base text-slate-800 max-w-xl mx-auto mb-8 leading-relaxed font-medium">
-            Connect with like-minded students and alumni for friendships, mentorship, and future career opportunities that will shape your journey.
-          </p>
+              <p className="text-sm sm:text-base text-slate-800 max-w-xl mx-auto mb-8 leading-relaxed font-medium">
+                Connect with like-minded students and alumni for friendships, mentorship, and future career opportunities that will shape your journey.
+              </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center ">
-            <Link
-              href="/signup"
-              className="px-6 py-3 bg-slate-900 text-white rounded-full hover:bg-slate-800 transition-all font-medium text-xs sm:text-sm shadow-lg hover:shadow-xl"
-            >
-              Join for Free →
-            </Link>
-            <Link
-              href="/posts"
-              className="group px-6 py-3 bg-white/90 backdrop-blur-sm text-slate-900 rounded-full hover:bg-white transition-all font-medium text-xs sm:text-sm border border-slate-200 flex items-center gap-2"
-            >
-              <Users2 size={16} />
-              Explore Communities
-            </Link>
-          </div>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center items-center ">
+                <Link
+                  href="/signup"
+                  className="px-6 py-3 bg-slate-900 text-white rounded-full hover:bg-slate-800 transition-all font-medium text-xs sm:text-sm shadow-lg hover:shadow-xl"
+                >
+                  Join for Free →
+                </Link>
+                <Link
+                  href="/posts"
+                  className="group px-6 py-3 bg-white/90 backdrop-blur-sm text-slate-900 rounded-full hover:bg-white transition-all font-medium text-xs sm:text-sm border border-slate-200 flex items-center gap-2"
+                >
+                  <Users2 size={16} />
+                  Explore Communities
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-5 text-slate-900 leading-tight tracking-tight">
+                Welcome Back, {userName}
+              </h1>
+
+              <p className="text-sm sm:text-base text-slate-800 max-w-xl mx-auto mb-8 leading-relaxed font-medium">
+                Ready to connect, share, and grow with your network today?
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+                <Link
+                  href="/posts"
+                  className="px-6 py-3 bg-slate-900 text-white rounded-full hover:bg-slate-800 transition-all font-medium text-xs sm:text-sm shadow-lg hover:shadow-xl"
+                >
+                  Create a Post
+                </Link>
+                <Link
+                  href="/chat"
+                  className="group px-6 py-3 bg-white/90 backdrop-blur-sm text-slate-900 rounded-full hover:bg-white transition-all font-medium text-xs sm:text-sm border border-slate-200 flex items-center gap-2"
+                >
+                  <MessageCircle size={16} />
+                  Start Chatting
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </section>
+
+      {/* Quick Access Section - Only for Authenticated Users */}
+      {isAuthenticated && (
+        <section className="px-6 py-16 bg-slate-50">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-12 text-slate-900">
+              Quick Access
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Link
+                href="/posts"
+                className="bg-white p-8 rounded-2xl border border-slate-200 hover:shadow-xl transition-all group"
+              >
+                <FileText className="mb-4 text-slate-700 group-hover:text-slate-900 group-hover:scale-110 transition-transform" size={40} />
+                <h3 className="font-bold text-slate-900 mb-2 text-lg">Posts</h3>
+                <p className="text-sm text-slate-600">Share your updates and connect with your community</p>
+              </Link>
+
+              <Link
+                href="/chat"
+                className="bg-white p-8 rounded-2xl border border-slate-200 hover:shadow-xl transition-all group"
+              >
+                <MessageCircle className="mb-4 text-slate-700 group-hover:text-slate-900 group-hover:scale-110 transition-transform" size={40} />
+                <h3 className="font-bold text-slate-900 mb-2 text-lg">Chat</h3>
+                <p className="text-sm text-slate-600">Connect with peers in real-time discussions</p>
+              </Link>
+
+              <Link
+                href="/profile"
+                className="bg-white p-8 rounded-2xl border border-slate-200 hover:shadow-xl transition-all group"
+              >
+                <User className="mb-4 text-slate-700 group-hover:text-slate-900 group-hover:scale-110 transition-transform" size={40} />
+                <h3 className="font-bold text-slate-900 mb-2 text-lg">Profile</h3>
+                <p className="text-sm text-slate-600">View and update your profile information</p>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Features Section */}
       <section id="features" className="px-6 py-24 bg-white">
@@ -112,38 +200,115 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="px-6 py-24 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-slate-900">
-            Built for Students, By Students
-          </h2>
-          <p className="text-lg text-slate-700 leading-relaxed mb-8">
-            We know how hard it can be to find the right connections after graduation. That is why we created AlumniConnect—to bridge the gap between where you are and where you want to be. Our platform brings together students and alumni in a meaningful way, making it easier to find mentorship, opportunities, and friendships that last.
-          </p>
-          <p className="text-lg text-slate-700 leading-relaxed">
-            Join thousands of students and alumni who are already building their futures, one connection at a time.
-          </p>
-        </div>
-      </section>
+      {/* About/Community Highlights Section */}
+      {!isAuthenticated ? (
+        <>
+          {/* About Section - Logged Out */}
+          <section id="about" className="px-6 py-24 bg-white">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-slate-900">
+                Built for Students, By Students
+              </h2>
+              <p className="text-lg text-slate-700 leading-relaxed mb-8">
+                We know how hard it can be to find the right connections after graduation. That is why we created AlumniConnect—to bridge the gap between where you are and where you want to be. Our platform brings together students and alumni in a meaningful way, making it easier to find mentorship, opportunities, and friendships that last.
+              </p>
+              <p className="text-lg text-slate-700 leading-relaxed">
+                Join thousands of students and alumni who are already building their futures, one connection at a time.
+              </p>
+            </div>
+          </section>
 
-      {/* CTA Section */}
-      <section className="px-6 py-24 bg-slate-50">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-slate-900">
-            Ready to Get Started?
-          </h2>
-          <p className="text-lg text-slate-700 mb-10">
-            Your next opportunity is just one connection away. Join for free today.
-          </p>
-          <Link
-            href="/signup"
-            className="inline-flex px-10 py-4 bg-slate-900 text-white rounded-full hover:bg-slate-800 transition-all font-semibold text-base shadow-xl hover:shadow-2xl"
-          >
-            Create Your Account →
-          </Link>
-        </div>
-      </section>
+          {/* CTA Section - Logged Out */}
+          <section className="px-6 py-24 bg-slate-50">
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-slate-900">
+                Ready to Get Started?
+              </h2>
+              <p className="text-lg text-slate-700 mb-10">
+                Your next opportunity is just one connection away. Join for free today.
+              </p>
+              <Link
+                href="/signup"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-full hover:bg-slate-800 transition-all font-medium text-base shadow-lg"
+              >
+                Create Your Account →
+              </Link>
+            </div>
+          </section>
+        </>
+      ) : (
+        <>
+          {/* Community Highlights - Logged In */}
+          <section className="px-6 py-24 bg-white">
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-slate-900">
+                Explore Your Community
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-slate-50 p-8 rounded-2xl border border-slate-200">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center">
+                      <TrendingUp className="text-white" size={24} />
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-900">Trending Discussions</h3>
+                  </div>
+                  <p className="text-slate-600 mb-4">
+                    Discover the hottest topics and join conversations that matter to your network.
+                  </p>
+                  <Link
+                    href="/posts"
+                    className="inline-flex items-center gap-2 text-slate-900 font-medium hover:gap-3 transition-all"
+                  >
+                    Browse Posts →
+                  </Link>
+                </div>
+
+                <div className="bg-slate-50 p-8 rounded-2xl border border-slate-200">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center">
+                      <MessageCircle className="text-white" size={24} />
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-900">Active Chats</h3>
+                  </div>
+                  <p className="text-slate-600 mb-4">
+                    Connect with peers in real-time and build meaningful relationships.
+                  </p>
+                  <Link
+                    href="/chat"
+                    className="inline-flex items-center gap-2 text-slate-900 font-medium hover:gap-3 transition-all"
+                  >
+                    Start Chatting →
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Activity Stats - Logged In */}
+          <section className="px-6 py-16 bg-slate-50">
+            <div className="max-w-5xl mx-auto">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-slate-900 mb-2">10+</div>
+                  <div className="text-sm text-slate-600">Active Members</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-slate-900 mb-2">5+</div>
+                  <div className="text-sm text-slate-600">Posts Shared</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-slate-900 mb-2">20+</div>
+                  <div className="text-sm text-slate-600">Active Chats</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-slate-900 mb-2">1+</div>
+                  <div className="text-sm text-slate-600">Companies</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </>
+      )}
 
       {/* Footer */}
       <footer className="px-6 py-12 border-t border-slate-200 bg-white">
@@ -209,7 +374,7 @@ const LandingPage = () => {
 
           <div className="pt-8 border-t border-slate-200 text-center">
             <p className="text-slate-600 text-sm">
-              © 2024 AlumniConnect. Made with care for students everywhere.
+              © 2025 AlumniConnect. Made with care for students everywhere.
             </p>
           </div>
         </div>

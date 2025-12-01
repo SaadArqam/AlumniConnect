@@ -60,7 +60,11 @@ export default function AuthForm() {
         localStorage.setItem("userId", data.user.id);
       }
 
-      router.push("/");
+      if (data.user?.name) {
+        localStorage.setItem("userName", data.user.name);
+      }
+
+      router.push("/profile");
     } catch (err) {
       setError(err.message || "Server error");
     } finally {

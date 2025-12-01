@@ -7,9 +7,13 @@ import { useRouter } from "next/navigation";
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [token, setToken] = useState(null);
+  const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    // Trigger animation
+    setIsMounted(true);
+
     const t =
       typeof window !== "undefined" ? localStorage.getItem("token") : null;
     setToken(t);
@@ -31,7 +35,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="fixed top-4 left-0 right-0 z-50 px-6">
+    <nav className={`fixed top-4 left-0 right-0 z-50 px-6 transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
       <div className="max-w-7xl mx-auto px-6 py-3 bg-white/80 backdrop-blur-lg border border-slate-200/60 rounded-full shadow-lg flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
