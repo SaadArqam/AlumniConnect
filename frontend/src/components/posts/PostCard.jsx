@@ -1,10 +1,29 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Heart, MessageCircle, Share2, Bookmark } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 export default function PostCard({ post, onLike }) {
   const hasImage = post.imageUrl && post.imageUrl.trim();
+  const [isLiked, setIsLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(post.likes ?? 0);
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (userId && post.likedBy) {
+      setIsLiked(post.likedBy.includes(userId));
+    }
+    setLikesCount(post.likes ?? 0);
+  }, [post]);
+
+  const handleLikeClick = () => {
+    if (onLike) {
+      onLike(post.id);
+      // Don't do optimistic updates - let the parent handle state updates
+      // This prevents state mismatches
+    }
+  };
 
   return (
     <article className="bg-white/80 backdrop-blur-lg border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
@@ -39,12 +58,21 @@ export default function PostCard({ post, onLike }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => onLike?.(post.id)}
-              className="flex items-center gap-1.5 text-slate-700 hover:text-red-500 transition-colors"
-              aria-label="Like"
+              onClick={handleLikeClick}
+              className={`flex items-center gap-1.5 transition-colors ${
+                isLiked
+                  ? "text-red-500 hover:text-red-600"
+                  : "text-slate-700 hover:text-red-500"
+              }`}
+              aria-label={isLiked ? "Unlike" : "Like"}
             >
-              <Heart size={22} className="hover:scale-110 transition-transform" />
-              <span className="text-sm font-medium">{post.likes ?? 0}</span>
+              <Heart
+                size={22}
+                className={`hover:scale-110 transition-transform ${
+                  isLiked ? "fill-current" : ""
+                }`}
+              />
+              <span className="text-sm font-medium">{likesCount}</span>
             </button>
             <button
               className="flex items-center gap-1.5 text-slate-700 hover:text-slate-900 transition-colors"

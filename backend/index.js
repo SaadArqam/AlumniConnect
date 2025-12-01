@@ -13,7 +13,8 @@ const chatSocket = require("./src/features/chat/chat.socket");
 const chatRoutes = require("./src/features/chat/chat.routes");
 const userRoutes = require("./src/features/user/user.routes");
 const verifyJWT = require("./src/features/auth/auth.service");
-const postRoutes = require("./routes/postRoutes");
+// Use the new Prisma-based posts feature routes
+const postRoutes = require("./src/features/posts/post.routes");
 
 const app = express();
 // Configure CORS: in development reflect the request origin so multiple localhost ports work.

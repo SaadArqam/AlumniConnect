@@ -94,6 +94,7 @@ model Post {
   imageUrl  String?
   createdAt DateTime  @default(now())
   likes     Int       @default(0)
+  likedBy   String[]  // Array of user IDs who liked this post
   comments  Comment[]
 }
 
