@@ -19,7 +19,7 @@ function buildTree(list) {
   return roots;
 }
 
-export default function MessageList({ messages, currentUserId, typingUsers = [], onReply, onToggleUpvote }) {
+export default function MessageList({ messages, currentUserId, typingUsers = [], onReply, onToggleUpvote, onDelete }) {
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function MessageList({ messages, currentUserId, typingUsers = [],
   return (
     <div className="flex flex-col h-full overflow-y-auto space-y-4">
       {tree.map((node) => (
-        <MessageItem key={node.id} node={node} currentUserId={currentUserId} onReply={onReply} onToggleUpvote={onToggleUpvote} />
+        <MessageItem key={node.id} node={node} currentUserId={currentUserId} onReply={onReply} onToggleUpvote={onToggleUpvote} onDelete={onDelete} />
       ))}
 
       {typingUsers.length > 0 && (
@@ -52,4 +52,5 @@ MessageList.propTypes = {
   typingUsers: PropTypes.array,
   onReply: PropTypes.func.isRequired,
   onToggleUpvote: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };

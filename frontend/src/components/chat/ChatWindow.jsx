@@ -111,6 +111,26 @@ export default function ChatWindow() {
     openThread(t.id);
   }
 
+  async function handleDeleteMessage(messageId) {
+    if (!token) return;
+
+    try {
+      const res = await fetch((process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000") + `/api/chat/messages/${messageId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (res.ok) {
+        // Remove message from local state
+        setMessages((prev) => prev.filter((m) => m.id !== messageId));
+      } else {
+        console.error("Failed to delete message");
+      }
+    } catch (error) {
+      console.error("Error deleting message:", error);
+    }
+  }
+
   function decodePayloadFromToken(t) {
     try {
       const payload = t.split('.')[1];
@@ -166,7 +186,7 @@ export default function ChatWindow() {
           <>
             {/* Message List */}
             <div className="flex-1 overflow-y-auto p-4">
-              <MessageList messages={messages} currentUserId={currentUserId} typingUsers={typingUsers} onReply={handleReply} onToggleUpvote={handleToggleUpvote} />
+              <MessageList messages={messages} currentUserId={currentUserId} typingUsers={typingUsers} onReply={handleReply} onToggleUpvote={handleToggleUpvote} onDelete={handleDeleteMessage} />
             </div>
 
             {/* Message Input */}
