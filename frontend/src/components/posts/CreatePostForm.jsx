@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Image, Smile } from "lucide-react";
 import api from "@/utils/api";
 
 export default function CreatePostForm({ onPostCreated }) {
@@ -9,6 +10,7 @@ export default function CreatePostForm({ onPostCreated }) {
   const [imageUrl, setImageUrl] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [showImageInput, setShowImageInput] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,8 +24,8 @@ export default function CreatePostForm({ onPostCreated }) {
       return;
     }
 
-    if (!title.trim() || !content.trim()) {
-      setError("Title and content are required.");
+    if (!content.trim()) {
+      setError("Content is required.");
       return;
     }
 
@@ -31,13 +33,14 @@ export default function CreatePostForm({ onPostCreated }) {
       setSubmitting(true);
       const post = await api.post("/posts", {
         authorId,
-        title: title.trim(),
+        title: title.trim() || "Untitled",
         content: content.trim(),
         imageUrl: imageUrl.trim() || undefined,
       });
       setTitle("");
       setContent("");
       setImageUrl("");
+      setShowImageInput(false);
       onPostCreated?.(post);
     } catch (err) {
       setError(err.message || "Failed to create post");
@@ -47,48 +50,78 @@ export default function CreatePostForm({ onPostCreated }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow rounded-xl p-6 space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Share your update"
-        />
-      </div>
+    <div className="bg-white/80 backdrop-blur-lg border border-slate-200 rounded-2xl p-4 shadow-sm">
+      <form onSubmit={handleSubmit} className="space-y-3">
+        {/* User Avatar + Input */}
+        <div className="flex gap-3">
+          <div className="h-10 w-10 rounded-full bg-slate-200 flex items-center justify-center text-sm font-medium text-slate-700 flex-shrink-0">
+            U
+          </div>
+          <div className="flex-1 space-y-3">
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="w-full bg-transparent text-slate-900 placeholder-slate-400 focus:outline-none resize-none text-sm"
+              placeholder="What's on your mind?"
+              rows={3}
+            />
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 h-28 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Write something inspiring for the alumni community"
-        />
-      </div>
+            {/* Title input (optional) */}
+            {title !== "" || content.length > 50 ? (
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                placeholder="Add a title (optional)"
+              />
+            ) : null}
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Image URL (optional)</label>
-        <input
-          type="url"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="https://example.com/image.jpg"
-        />
-      </div>
+            {/* Image URL input */}
+            {showImageInput && (
+              <input
+                type="url"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                placeholder="Paste image URL"
+              />
+            )}
+          </div>
+        </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-red-600 px-13">{error}</p>}
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold py-2 rounded-lg transition"
-      >
-        {submitting ? "Posting..." : "Post"}
-      </button>
-    </form>
+        {/* Actions */}
+        <div className="flex items-center justify-between pt-2 border-t border-slate-200">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowImageInput(!showImageInput)}
+              className={`p-2 rounded-lg transition-colors ${showImageInput ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
+                }`}
+              aria-label="Add image"
+            >
+              <Image size={20} />
+            </button>
+            <button
+              type="button"
+              className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+              aria-label="Add emoji"
+            >
+              <Smile size={20} />
+            </button>
+          </div>
+
+          <button
+            type="submit"
+            disabled={submitting || !content.trim()}
+            className="px-5 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium text-sm"
+          >
+            {submitting ? "Posting..." : "Post"}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
