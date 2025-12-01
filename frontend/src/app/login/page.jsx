@@ -5,11 +5,9 @@ import AuthForm from '@/components/LoginPage';
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-[#0c0c0d]">
+    <div className="min-h-screen bg-slate-50">
       <Navbar />
-      <div className="pt-24">
-        <AuthForm />
-      </div>
+      <AuthForm />
     </div>
   );
 }

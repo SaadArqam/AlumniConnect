@@ -1,10 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-
-import { Mail, Lock, Apple, Github, Chrome } from "lucide-react";
+import { Mail, Lock, User } from "lucide-react";
 
 export default function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
@@ -20,10 +18,10 @@ export default function AuthForm() {
   async function handleSubmit(e) {
     e.preventDefault();
     setError(null);
-    
-  if (!email.includes("@")) return setError("Enter a valid email address");
+
+    if (!email.includes("@")) return setError("Enter a valid email address");
     if (password.length < 6) return setError("Password must be at least 6 characters");
-  if (!isLogin && !name.trim()) return setError("Please enter your name");
+    if (!isLogin && !name.trim()) return setError("Please enter your name");
 
     setLoading(true);
     try {
@@ -71,110 +69,128 @@ export default function AuthForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0c0c0d] px-4">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="w-full max-w-sm p-8 rounded-3xl shadow-[0_0_80px_rgba(255,0,0,0.15)] bg-[#141416]/60 backdrop-blur-2xl relative border border-white/10"
-      >
-        <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-red-500/20 to-transparent pointer-events-none" />
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12">
+      <div className="w-full max-w-md">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2">
+            {isLogin ? "Welcome Back" : "Join AlumniConnect"}
+          </h1>
+          <p className="text-slate-600 text-sm">
+            {isLogin ? "Sign in to continue your journey" : "Create your account to get started"}
+          </p>
+        </div>
 
-        <h2 className="text-center text-2xl font-semibold text-gray-100 relative z-10">
-          {isLogin ? "Welcome back" : "Join the platform"}
-        </h2>
-        <p className="text-center text-gray-400 text-sm mb-6 relative z-10">
-          {isLogin ? "Sign in to continue" : "Create your account"}
-        </p>
+        {/* Form Card */}
+        <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg border border-slate-200 p-8">
+          {registered && (
+            <div className="mb-6 p-3 bg-green-50 border border-green-200 rounded-lg text-center text-sm text-green-700">
+              Registration successful! Please log in.
+            </div>
+          )}
 
-        {registered && (
-          <div className="mb-4 text-center text-sm text-green-400">Registration successful — please login.</div>
-        )}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {!isLogin && (
+              <div>
+                <label className="block text-slate-700 text-sm font-medium mb-2">
+                  Full Name
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-slate-400" />
+                  </div>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+              </div>
+            )}
 
-        <form onSubmit={handleSubmit} className="relative z-10 space-y-4">
-          {!isLogin && (
             <div>
-              <label className="text-gray-400 text-sm">Name</label>
-              <div className="flex items-center bg-[#1b1c1e] mt-1 px-4 py-3 rounded-xl border border-white/5 focus-within:border-red-500/40">
+              <label className="block text-slate-700 text-sm font-medium mb-2">
+                Email Address
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-slate-400" />
+                </div>
                 <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-transparent text-gray-200 focus:outline-none"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                  placeholder="you@example.com"
                 />
               </div>
             </div>
-          )}
 
-          <div>
-            <label className="text-gray-400 text-sm">Email</label>
-            <div className="flex items-center bg-[#1b1c1e] mt-1 px-4 py-3 rounded-xl border border-white/5 focus-within:border-red-500/40">
-              <Mail className="w-4 h-4 text-gray-400 mr-2" />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-transparent text-gray-200 focus:outline-none"
-              />
+            <div>
+              <label className="block text-slate-700 text-sm font-medium mb-2">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-slate-400" />
+                </div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
+                  placeholder="••••••••"
+                />
+              </div>
             </div>
-          </div>
 
-          <div>
-            <label className="text-gray-400 text-sm">Password</label>
-            <div className="flex items-center bg-[#1b1c1e] mt-1 px-4 py-3 rounded-xl border border-white/5 focus-within:border-red-500/40">
-              <Lock className="w-4 h-4 text-gray-400 mr-2" />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-transparent text-gray-200 focus:outline-none"
-              />
-            </div>
-          </div>
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-center text-sm text-red-700">
+                {error}
+              </div>
+            )}
 
-          {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+            {isLogin && (
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="text-slate-600 text-sm hover:text-slate-900 transition-colors"
+                >
+                  Forgot Password?
+                </button>
+              </div>
+            )}
 
-          {isLogin && (
-            <div className="text-right">
-              <button type="button" className="text-gray-400 text-sm hover:text-gray-200">
-                Forgot Password?
-              </button>
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full h-12 rounded-xl bg-red-500 hover:bg-red-600 transition font-medium text-white disabled:opacity-60"
-          >
-            {loading ? "Please wait..." : isLogin ? "Login" : "Create Account"}
-          </button>
-        </form>
-
-        <div className="flex items-center my-6 relative z-10">
-          <div className="flex-1 h-px bg-gray-700" />
-          <span className="px-3 text-gray-500 text-sm">or continue with</span>
-          <div className="flex-1 h-px bg-gray-700" />
-        </div>
-
-        <div className="flex justify-center gap-3 relative z-10">
-          {[Apple, Github, Chrome].map((Icon, i) => (
-            <button key={i} className="w-10 h-10 bg-[#1b1c1e] hover:bg-[#222326] flex items-center justify-center rounded-xl border border-white/5">
-              <Icon className="w-5 h-5 text-gray-300" />
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-all font-medium text-sm shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? "Please wait..." : isLogin ? "Sign In" : "Create Account"}
             </button>
-          ))}
+          </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-slate-600 text-sm">
+              {isLogin ? "Don't have an account?" : "Already have an account?"}
+              <button
+                type="button"
+                className="text-slate-900 font-medium hover:underline ml-1"
+                onClick={() => setIsLogin(!isLogin)}
+              >
+                {isLogin ? "Sign up" : "Sign in"}
+              </button>
+            </p>
+          </div>
         </div>
 
-        <p className="text-center text-gray-400 text-sm mt-6 relative z-10">
-          {isLogin ? "Don't have an account?" : "Already registered?"}
-          <button
-            className="text-red-400 hover:text-red-300 ml-1"
-            onClick={() => setIsLogin(!isLogin)}
-          >
-            {isLogin ? "Sign up" : "Login"}
-          </button>
+        {/* Footer */}
+        <p className="text-center text-slate-500 text-xs mt-6">
+          By continuing, you agree to our Terms of Service and Privacy Policy.
         </p>
-      </motion.div>
+      </div>
     </div>
   );
 }
