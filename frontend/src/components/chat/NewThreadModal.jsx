@@ -11,34 +11,34 @@ export default function NewThreadModal({ isOpen, onClose, onCreateThread }) {
     if (title.trim()) {
       onCreateThread(title.trim());
       setTitle('');
-      onClose(); // Close modal after creating thread
+      onClose();
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-gray-800/30 backdrop-blur-lg p-8 rounded-3xl shadow-xl border border-gray-700 w-full max-w-md mx-4">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">Create New Thread</h2>
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-white/90 backdrop-blur-lg p-8 rounded-2xl shadow-xl border border-slate-200 w-full max-w-md mx-4">
+        <h2 className="text-2xl font-bold text-slate-900 mb-6">Create New Thread</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter thread title..."
-            className="w-full p-3 mb-4 bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner"
+            className="w-full p-3 mb-4 bg-slate-50 rounded-lg border border-slate-200 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent"
             required
           />
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-end gap-3">
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-3 bg-gray-700/50 text-gray-200 rounded-full hover:bg-gray-600/50 transition duration-200 ease-in-out shadow-md"
+              className="px-5 py-2.5 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-all text-sm font-medium"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200 ease-in-out shadow-md"
+              className="px-5 py-2.5 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-all text-sm font-medium shadow-md"
             >
               Create
             </button>

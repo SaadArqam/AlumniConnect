@@ -4,7 +4,7 @@ import useSocket from "../../hooks/useSocket";
 import { getSocket } from "../../utils/socket";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
-import NewThreadModal from "./NewThreadModal"; // Import the new modal component
+import NewThreadModal from "./NewThreadModal";
 
 export default function ChatWindow() {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
@@ -13,7 +13,7 @@ export default function ChatWindow() {
   const [currentThread, setCurrentThread] = useState(null);
   const [messages, setMessages] = useState([]);
   const [typingUsers, setTypingUsers] = useState([]);
-  const [isNewThreadModalOpen, setIsNewThreadModalOpen] = useState(false); // State for modal visibility
+  const [isNewThreadModalOpen, setIsNewThreadModalOpen] = useState(false);
 
   useEffect(() => {
     if (!token) return;
@@ -54,7 +54,7 @@ export default function ChatWindow() {
 
     s.on("new_message", onNewMessage);
     s.on("user_typing", onUserTyping);
-  s.on("update_message", onUpdateMessage);
+    s.on("update_message", onUpdateMessage);
 
     return () => {
       s.off("new_message", onNewMessage);
@@ -80,11 +80,9 @@ export default function ChatWindow() {
 
   function handleReply(parentId) {
     setReplyTo(parentId);
-    // focus could be handled by MessageInput if needed
   }
 
   function handleSent(opt) {
-    // opt may be { threadId, content, parentId } when socket used; real message will arrive via socket
     setReplyTo(null);
   }
 
@@ -113,6 +111,26 @@ export default function ChatWindow() {
     openThread(t.id);
   }
 
+  async function handleDeleteMessage(messageId) {
+    if (!token) return;
+
+    try {
+      const res = await fetch((process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000") + `/api/chat/messages/${messageId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (res.ok) {
+        // Remove message from local state
+        setMessages((prev) => prev.filter((m) => m.id !== messageId));
+      } else {
+        console.error("Failed to delete message");
+      }
+    } catch (error) {
+      console.error("Error deleting message:", error);
+    }
+  }
+
   function decodePayloadFromToken(t) {
     try {
       const payload = t.split('.')[1];
@@ -129,50 +147,56 @@ export default function ChatWindow() {
   const currentUserId = decoded?.userId ?? null;
 
   return (
-    <div className="h-[calc(100vh-8rem)] flex rounded-3xl shadow-2xl overflow-hidden bg-gray-800/20 backdrop-blur-xl border border-gray-700">
+    <div className="h-full flex rounded-2xl shadow-lg overflow-hidden bg-white/80 backdrop-blur-lg border border-slate-200">
       {/* Sidebar for Threads */}
-      <aside className="w-80 bg-gray-900/30 backdrop-blur-lg border-r border-gray-700 flex flex-col p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-gray-100">Threads</h2>
-          <button
-            onClick={() => setIsNewThreadModalOpen(true)} // Open the modal
-            className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-200 ease-in-out shadow-md"
-          >
-            New Thread
-          </button>
+      <aside className="w-80 bg-white/60 backdrop-blur-md border-r border-slate-200 flex flex-col">
+        <div className="p-4 border-b border-slate-200">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-lg font-semibold text-slate-900">Threads</h2>
+            <button
+              onClick={() => setIsNewThreadModalOpen(true)}
+              className="px-4 py-2 bg-slate-900 text-white text-xs rounded-full hover:bg-slate-800 transition-all shadow-sm"
+            >
+              New Thread
+            </button>
+          </div>
         </div>
-        <div className="flex-1 overflow-y-auto space-y-2 pr-2">
+        <div className="flex-1 overflow-y-auto p-3 space-y-2">
           {threads.map((t) => (
             <div
               key={t.id}
               onClick={() => openThread(t.id)}
-              className={`p-3 rounded-2xl cursor-pointer transition duration-200 ease-in-out
-                ${currentThread === t.id ? 'bg-blue-600/50 text-white shadow-lg' : 'bg-gray-700/30 hover:bg-gray-600/50 text-gray-200'}`}
+              className={`p-3 rounded-lg cursor-pointer transition-all ${currentThread === t.id
+                ? 'bg-slate-900 text-white shadow-md'
+                : 'bg-slate-50/80 hover:bg-slate-100 text-slate-900'
+                }`}
             >
-              <div className="font-semibold text-lg">{t.title}</div>
-              <div className="text-sm text-gray-300">by {t.createdBy?.name || t.createdById}</div>
+              <div className="font-medium text-sm">{t.title}</div>
+              <div className={`text-xs mt-1 ${currentThread === t.id ? 'text-slate-300' : 'text-slate-500'}`}>
+                by {t.createdBy?.name || t.createdById}
+              </div>
             </div>
           ))}
         </div>
       </aside>
 
       {/* Main Chat Area */}
-      <main className="flex-1 flex flex-col bg-gray-800/10 backdrop-blur-sm">
+      <main className="flex-1 flex flex-col bg-slate-50/50">
         {currentThread ? (
           <>
             {/* Message List */}
             <div className="flex-1 overflow-y-auto p-4">
-              <MessageList messages={messages} currentUserId={currentUserId} typingUsers={typingUsers} onReply={handleReply} onToggleUpvote={handleToggleUpvote} />
+              <MessageList messages={messages} currentUserId={currentUserId} typingUsers={typingUsers} onReply={handleReply} onToggleUpvote={handleToggleUpvote} onDelete={handleDeleteMessage} />
             </div>
 
             {/* Message Input */}
-            <div className="p-4 border-t border-gray-700 bg-gray-900/30 backdrop-blur-lg">
-              <MessageInput threadId={currentThread} socket={socket} parentId={replyTo} onSent={handleSent} placeholder={replyTo ? 'Replying...' : 'Post a comment...'} />
+            <div className="p-4 border-t border-slate-200 bg-white/80 backdrop-blur-md">
+              <MessageInput threadId={currentThread} socket={socket} parentId={replyTo} onSent={handleSent} placeholder={replyTo ? 'Replying...' : 'Type a message...'} />
             </div>
           </>
         ) : (
-          <div className="flex-1 flex items-center justify-center text-gray-400 text-xl font-semibold">
-            Select or create a thread to start chatting
+          <div className="flex-1 flex items-center justify-center text-slate-400 text-base">
+            Select a thread to start chatting
           </div>
         )}
       </main>
