@@ -1,12 +1,11 @@
 "use client";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Menu } from "lucide-react";
+import { Users2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [token, setToken] = useState(null);
   const router = useRouter();
 
@@ -32,89 +31,120 @@ export default function Navbar() {
   }
 
   return (
-    <motion.nav
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4 }}
-      className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-[#0a0a0b]/60 border-b border-white/10"
-    >
-      <div className="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center">
+    <nav className="fixed top-4 left-0 right-0 z-50 px-6">
+      <div className="max-w-7xl mx-auto px-6 py-3 bg-white/80 backdrop-blur-lg border border-slate-200/60 rounded-full shadow-lg flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="text-white text-xl font-semibold tracking-wide">
-          AlumniConnect
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-7 h-7 bg-slate-900 rounded-lg flex items-center justify-center">
+            <Users2 className="text-white" size={16} />
+          </div>
+          <span className="text-base font-semibold text-slate-900">AlumniConnect</span>
         </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex gap-6 text-gray-300">
-          <Link href="/" className="hover:text-white">Home</Link>
-          <Link href="/chat" className="hover:text-white">Chat</Link>
-          <Link href="/about" className="hover:text-white">About</Link>
-          <Link href="/contact" className="hover:text-white">Contact</Link>
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center gap-6">
+          <Link href="/" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
+            Home
+          </Link>
+          <Link href="/chat" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
+            Chat
+          </Link>
+          <Link href="/about" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
+            About
+          </Link>
+          <Link href="/contact" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
+            Contact
+          </Link>
 
           {token && (
             <>
-              <Link href="/posts" className="hover:text-white">Posts</Link> {/* fixed */}
-              <Link href="/profile" className="hover:text-white">Profile</Link>
+              <Link href="/posts" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
+                Posts
+              </Link>
+              <Link href="/profile" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
+                Profile
+              </Link>
             </>
           )}
-        </div>
 
-        {/* Actions */}
-        <div className="hidden md:flex">
           {!token ? (
             <Link
               href="/login"
-              className="px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 transition text-white font-medium"
+              className="px-4 py-2 bg-slate-900 text-white rounded-full hover:bg-slate-800 transition-all text-sm font-medium"
             >
               Login
             </Link>
           ) : (
             <button
               onClick={handleLogout}
-              className="px-4 py-2 rounded-xl bg-gray-700 hover:bg-gray-600 transition text-white font-medium"
+              className="px-4 py-2 bg-slate-900 text-white rounded-full hover:bg-slate-800 transition-all text-sm font-medium"
             >
               Logout
             </button>
           )}
         </div>
 
-        {/* Mobile Toggle */}
-        <button className="md:hidden" onClick={() => setOpen(!open)}>
-          <Menu className="w-6 h-6 text-gray-200" />
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden text-slate-900"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {mobileMenuOpen ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
         </button>
       </div>
 
       {/* Mobile Menu */}
-      {open && (
-        <div className="md:hidden bg-[#0b0b0c]/90 backdrop-blur-xl border-t border-white/10 px-6 py-4 space-y-3">
-          <Link href="/" className="block text-gray-300">Home</Link>
-          <Link href="/chat" className="block text-gray-300">Chat</Link>
-          <Link href="/about" className="block text-gray-300">About</Link>
-
-          {token && (
-            <>
-              <Link href="/posts" className="block text-gray-300">Posts</Link> {/* fixed */}
-              <Link href="/profile" className="block text-gray-300">Profile</Link>
-            </>
-          )}
-
-          {!token ? (
-            <Link
-              href="/login"
-              className="block mt-2 w-full text-center py-2 rounded-xl bg-red-500 hover:bg-red-600 transition text-white"
-            >
-              Login
+      {mobileMenuOpen && (
+        <div className="fixed top-20 left-4 right-4 mx-auto max-w-md bg-white/95 backdrop-blur-lg rounded-2xl shadow-xl border border-slate-200 py-4 z-40">
+          <div className="flex flex-col gap-1 px-4">
+            <Link href="/" className="text-slate-700 hover:text-slate-900 transition-colors py-2.5 px-3 rounded-lg hover:bg-slate-100 text-sm">
+              Home
             </Link>
-          ) : (
-            <button
-              onClick={handleLogout}
-              className="block mt-2 w-full text-center py-2 rounded-xl bg-gray-700 hover:bg-gray-600 transition text-white"
-            >
-              Logout
-            </button>
-          )}
+            <Link href="/chat" className="text-slate-700 hover:text-slate-900 transition-colors py-2.5 px-3 rounded-lg hover:bg-slate-100 text-sm">
+              Chat
+            </Link>
+            <Link href="/about" className="text-slate-700 hover:text-slate-900 transition-colors py-2.5 px-3 rounded-lg hover:bg-slate-100 text-sm">
+              About
+            </Link>
+            <Link href="/contact" className="text-slate-700 hover:text-slate-900 transition-colors py-2.5 px-3 rounded-lg hover:bg-slate-100 text-sm">
+              Contact
+            </Link>
+
+            {token && (
+              <>
+                <Link href="/posts" className="text-slate-700 hover:text-slate-900 transition-colors py-2.5 px-3 rounded-lg hover:bg-slate-100 text-sm">
+                  Posts
+                </Link>
+                <Link href="/profile" className="text-slate-700 hover:text-slate-900 transition-colors py-2.5 px-3 rounded-lg hover:bg-slate-100 text-sm">
+                  Profile
+                </Link>
+              </>
+            )}
+
+            {!token ? (
+              <Link
+                href="/login"
+                className="mt-2 px-4 py-2.5 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-all text-center font-medium text-sm"
+              >
+                Login
+              </Link>
+            ) : (
+              <button
+                onClick={handleLogout}
+                className="mt-2 px-4 py-2.5 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-all text-center font-medium text-sm"
+              >
+                Logout
+              </button>
+            )}
+          </div>
         </div>
       )}
-    </motion.nav>
+    </nav>
   );
 }
