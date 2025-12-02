@@ -21,7 +21,30 @@ const app = express();
 // Configure CORS: in development reflect the request origin so multiple localhost ports work.
 // In production, only allow the configured CLIENT_URL.
 const clientUrl = process.env.CLIENT_URL;
+const defaultOrigins = [
+  "http://localhost:3000",
+  process.env.FRONTEND_URL,
+  clientUrl,
+  "https://alumniconnect-frontend.onrender.com",
+  "https://alumni-connect-murex.vercel.app",
+  "https://reunifyyy.vercel.app",
+].filter(Boolean);
+
+const allowedOrigins = Array.from(
+  new Set(
+    defaultOrigins.concat(
+      (process.env.ALLOWED_ORIGINS || "")
+        .split(",")
+        .map((o) => o.trim())
+        .filter(Boolean)
+    )
+  )
+);
+
 console.log("CORS client URL:", clientUrl || "(not set - development mode will reflect origin)");
+if (allowedOrigins.length) {
+  console.log("Additional allowed origins:", allowedOrigins.join(", "));
+}
 
 const corsOptions = {
   credentials: true,
@@ -32,8 +55,14 @@ const corsOptions = {
     // during development, be permissive and reflect the origin
     if (process.env.NODE_ENV !== "production") return callback(null, true);
 
-    // in production, only allow the configured client URL
-    if (clientUrl && origin === clientUrl) return callback(null, true);
+    // in production, check explicit allow-list
+    if (allowedOrigins.length === 0) {
+      return callback(null, true);
+    }
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
 
     // otherwise block
     return callback(new Error("Not allowed by CORS"));
@@ -90,7 +119,7 @@ app.get("/api/profile", verifyJWT, async (req, res) => {
 });
 
 // START SERVER 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`✅ Server + Socket.IO running on port ${PORT}`);
 });

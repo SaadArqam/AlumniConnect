@@ -1,5 +1,6 @@
 "use client";
 import Link from 'next/link';
+import Image from 'next/image';
 import { Users2, MessageCircle, FileText, User, TrendingUp, Calendar } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -135,7 +136,7 @@ const LandingPage = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-slate-900">
-              Why Join AlumniConnect?
+              Why Join Reunify?
             </h2>
             <p className="text-lg text-slate-700 max-w-2xl mx-auto">
               We make it easy to connect, grow, and succeed together.
@@ -210,7 +211,7 @@ const LandingPage = () => {
                 Built for Students, By Students
               </h2>
               <p className="text-lg text-slate-700 leading-relaxed mb-8">
-                We know how hard it can be to find the right connections after graduation. That is why we created AlumniConnect—to bridge the gap between where you are and where you want to be. Our platform brings together students and alumni in a meaningful way, making it easier to find mentorship, opportunities, and friendships that last.
+                We know how hard it can be to find the right connections after graduation. That is why we created Reunify—to bridge the gap between where you are and where you want to be. Our platform brings together students and alumni in a meaningful way, making it easier to find mentorship, opportunities, and friendships that last.
               </p>
               <p className="text-lg text-slate-700 leading-relaxed">
                 Join thousands of students and alumni who are already building their futures, one connection at a time.
@@ -316,10 +317,14 @@ const LandingPage = () => {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
-                  <Users2 className="text-white" size={18} />
-                </div>
-                <span className="text-lg font-semibold text-slate-900">AlumniConnect</span>
+                <Image
+                  src="/logo.png"
+                  alt="Reunify Logo"
+                  width={40}
+                  height={40}
+                  className="w-10 h-10 object-contain"
+                />
+                <span className="text-lg font-semibold text-slate-900">Reunify</span>
               </div>
               <p className="text-slate-600 text-sm leading-relaxed">
                 Connecting students with alumni for meaningful relationships and career growth.
@@ -374,7 +379,7 @@ const LandingPage = () => {
 
           <div className="pt-8 border-t border-slate-200 text-center">
             <p className="text-slate-600 text-sm">
-              © 2025 AlumniConnect. Made with care for students everywhere.
+              © 2025 Reunify. Made with care for students everywhere.
             </p>
           </div>
         </div>

@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 let socket = null;
 
 export function initSocket(token) {
-  const url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  const url = process.env.NEXT_PUBLIC_API_URL || "https://alumniconnect-backend-31pn.onrender.com";
   if (socket) return socket;
 
   socket = io(url, {

@@ -327,6 +327,5 @@ Open a pull request
 ```
 **📝 License**
 ```
-MIT License © Reunify
+MIT License ©️ Reunify
 ```
-

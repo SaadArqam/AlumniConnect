@@ -15,9 +15,16 @@
 
 const express = require("express");
 const app = express();
+const cors = require('cors');
+
+app.use(cors({
+  origin: 'http://localhost:3000', // your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true, // if sending cookies or auth headers
+}));
+app.options('*', cors());
 
 app.use(express.json());
-
 const postRoutes = require("./src/features/posts/post.routes");
 app.use("/posts", postRoutes);
 

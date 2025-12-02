@@ -3,13 +3,13 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "https://alumniconnect-backend-31pn.onrender.com").replace(/\/$/, "");
 
 const UserContext = createContext({
   user: null,
   loading: true,
-  refreshUser: async () => {},
-  setUser: () => {},
+  refreshUser: async () => { },
+  setUser: () => { },
 });
 
 const PROFILE_GUARD_DISABLED_ROUTES = new Set([

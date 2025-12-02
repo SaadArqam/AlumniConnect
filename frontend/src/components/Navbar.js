@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Users2 } from "lucide-react";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -39,10 +39,14 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 py-3 bg-white/80 backdrop-blur-lg border border-slate-200/60 rounded-full shadow-lg flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-slate-900 rounded-lg flex items-center justify-center">
-            <Users2 className="text-white" size={16} />
-          </div>
-          <span className="text-base font-semibold text-slate-900">AlumniConnect</span>
+          <Image
+            src="/logo.png"
+            alt="Reunify Logo"
+            width={40}
+            height={40}
+            className="w-10 h-10 object-contain"
+          />
+          <span className="text-base font-semibold text-slate-900">Reunify</span>
         </Link>
 
         {/* Desktop Menu */}
@@ -53,12 +57,12 @@ export default function Navbar() {
           <Link href="/chat" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
             Chat
           </Link>
-          <Link href="/about" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
+          {/* <Link href="/about" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
             About
           </Link>
           <Link href="/connect" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
             Connect
-          </Link>
+          </Link> */}
 
           {token && (
             <>
@@ -113,12 +117,12 @@ export default function Navbar() {
             <Link href="/chat" className="text-slate-700 hover:text-slate-900 transition-colors py-2.5 px-3 rounded-lg hover:bg-slate-100 text-sm">
               Chat
             </Link>
-            <Link href="/about" className="text-slate-700 hover:text-slate-900 transition-colors py-2.5 px-3 rounded-lg hover:bg-slate-100 text-sm">
+            {/* <Link href="/about" className="text-slate-700 hover:text-slate-900 transition-colors py-2.5 px-3 rounded-lg hover:bg-slate-100 text-sm">
               About
             </Link>
             <Link href="/contact" className="text-slate-700 hover:text-slate-900 transition-colors py-2.5 px-3 rounded-lg hover:bg-slate-100 text-sm">
               Contact
-            </Link>
+            </Link> */}
 
             {token && (
               <>
