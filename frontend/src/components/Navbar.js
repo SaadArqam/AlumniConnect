@@ -56,8 +56,8 @@ export default function Navbar() {
           <Link href="/about" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
             About
           </Link>
-          <Link href="/contact" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
-            Contact
+          <Link href="/connect" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
+            Connect
           </Link>
 
           {token && (
