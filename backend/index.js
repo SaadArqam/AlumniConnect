@@ -21,10 +21,23 @@ const app = express();
 // Configure CORS: in development reflect the request origin so multiple localhost ports work.
 // In production, only allow the configured CLIENT_URL.
 const clientUrl = process.env.CLIENT_URL;
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || clientUrl || "")
-  .split(",")
-  .map((o) => o.trim())
-  .filter(Boolean);
+const defaultOrigins = [
+  "http://localhost:3000",
+  process.env.FRONTEND_URL,
+  clientUrl,
+  "https://alumniconnect-frontend.onrender.com",
+].filter(Boolean);
+
+const allowedOrigins = Array.from(
+  new Set(
+    defaultOrigins.concat(
+      (process.env.ALLOWED_ORIGINS || "")
+        .split(",")
+        .map((o) => o.trim())
+        .filter(Boolean)
+    )
+  )
+);
 
 console.log("CORS client URL:", clientUrl || "(not set - development mode will reflect origin)");
 if (allowedOrigins.length) {
@@ -55,6 +68,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(passport.initialize());

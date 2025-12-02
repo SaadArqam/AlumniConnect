@@ -22,6 +22,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true, // if sending cookies or auth headers
 }));
+app.options('*', cors());
 
 app.use(express.json());
 const postRoutes = require("./src/features/posts/post.routes");
