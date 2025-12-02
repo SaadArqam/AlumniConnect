@@ -1,4 +1,4 @@
-# AlumniConnect
+# Reunify
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen)
@@ -8,7 +8,7 @@
 
 > **Bridging the gap between students and alumni.**
 
-AlumniConnect is a comprehensive platform designed to foster mentorship, networking, and professional growth. It addresses the challenge of disconnected alumni networks by providing a dedicated, feature-rich space for interaction, knowledge sharing, and career guidance.
+Reunify is a comprehensive platform designed to foster mentorship, networking, and professional growth. It addresses the challenge of disconnected alumni networks by providing a dedicated, feature-rich space for interaction, knowledge sharing, and career guidance.
 
 ---
 
