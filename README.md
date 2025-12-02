@@ -19,11 +19,10 @@ Reunify enables **students and alumni of the same institution** to connect, shar
 # 🧱 Architecture Overview
 
 
-Here is your same diagram, wrapped correctly — **copy-paste exactly**:
 
 ---
 
-## ✅ Correct Markdown (Works 100%)
+
 
 ```txt
 +-------------------------+
