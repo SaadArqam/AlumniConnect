@@ -94,17 +94,21 @@ model Post {
   imageUrl  String?
   createdAt DateTime  @default(now())
   likes     Int       @default(0)
+  likedBy   String[]  // Array of user IDs who liked this post
   comments  Comment[]
 }
 
 model Comment {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  postId    String   @db.ObjectId
-  post      Post     @relation(fields: [postId], references: [id])
-  authorId  String   @db.ObjectId
-  author    User     @relation(fields: [authorId], references: [id])
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  postId    String    @db.ObjectId
+  post      Post      @relation(fields: [postId], references: [id])
+  authorId  String    @db.ObjectId
+  author    User      @relation(fields: [authorId], references: [id])
   content   String
-  createdAt DateTime @default(now())
+  parentId  String?   @db.ObjectId  // For threaded/reply comments
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("CommentReplies")
+  createdAt DateTime  @default(now())
 }
 
 model Thread {
