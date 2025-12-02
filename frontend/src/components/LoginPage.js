@@ -27,7 +27,7 @@ export default function AuthForm() {
 
     setLoading(true);
     try {
-      const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+      const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
       if (!isLogin) {
         // register only, then redirect to login page
@@ -60,6 +60,13 @@ export default function AuthForm() {
 
       if (data.user) {
         setUser(data.user);
+        // Store user data in localStorage for components that don't use UserContext
+        if (data.user.id) {
+          localStorage.setItem("userId", data.user.id);
+        }
+        if (data.user.name) {
+          localStorage.setItem("userName", data.user.name);
+        }
       }
 
       // ensure global context fetches the latest user before navigation
