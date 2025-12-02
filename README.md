@@ -1,225 +1,333 @@
-# AlumniConnect
+# 🎓 Reunify  
+*A modern full-stack networking platform bridging students and alumni.*
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen)
-![Next.js](https://img.shields.io/badge/Next.js-15.5-black)
-![Express](https://img.shields.io/badge/Express-5.1-gray)
-![Prisma](https://img.shields.io/badge/Prisma-6.19-blueviolet)
-
-> **Bridging the gap between students and alumni.**
-
-AlumniConnect is a comprehensive platform designed to foster mentorship, networking, and professional growth. It addresses the challenge of disconnected alumni networks by providing a dedicated, feature-rich space for interaction, knowledge sharing, and career guidance.
-
----
-
-## 📑 Table of Contents
-
-- [Features](#-Features)
-- [System Architecture](#-system-architecture)
-- [Tech Stack](#-tech-stack)
-- [Getting Started](#-getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Environment Variables](#environment-variables)
-- [API Documentation](#-api-documentation)
-- [Database Schema](#-database-schema)
-- [Project Structure](#-project-structure)
-- [Contributing](#-contributing)
-- [License](#-license)
+Reunify enables **students and alumni of the same institution** to connect, share opportunities, mentor each other, and engage in meaningful discussions.
 
 ---
 
 ## ✨ Features
 
-- **🔐 Secure Authentication**: Robust Google OAuth integration with Passport.js and JWT-based session management.
-- **👥 Role-Based Profiles**: Distinct profiles for **Students** (academic details) and **Alumni** (professional history).
-- **💬 Real-time Communication**: Instant messaging and chat rooms powered by Socket.IO.
-- **📝 Community Feed**: Share updates, achievements, and opportunities with a rich text posting system.
-- **🛡️ Route Protection**: Secure frontend guards ensuring privacy and authorized access.
-- **🔍 Advanced Search**: Find peers and mentors easily with optimized search functionality.
+- 🔐 **JWT Authentication (Email + Password Only)**
+- 👤 **Role-based profiles** — Student / Alumni  
+- 📝 **Social Feed** — posts, likes, comments & threaded replies  
+- 💬 **Real-time chat** using Socket.IO  
+- 📚 **Rich profiles** — skills, education, professional details  
+- ⚡ **Next.js Frontend + Node.js Backend + Prisma + MongoDB**
 
 ---
 
-## 🏗 System Architecture
+# 🧱 Architecture Overview
 
-```mermaid
-graph TD
-    User[User] -->|Browser| Frontend[Next.js Frontend]
-    Frontend -->|HTTP/REST| Backend[Express Backend]
-    Frontend -->|Socket.IO| Socket[Socket.IO Server]
-    Backend -->|Auth| Passport[Passport Google OAuth]
-    Backend -->|Query| Prisma[Prisma ORM]
-    Prisma -->|Data| MongoDB[(MongoDB)]
+
+Here is your same diagram, wrapped correctly — **copy-paste exactly**:
+
+---
+
+## ✅ Correct Markdown (Works 100%)
+
+```txt
++-------------------------+
+|        Browser          |
+|  - React UI             |
+|  - Posts, Chat, Profile |
++------------+------------+
+             |
+     HTTPS calls + WebSockets
+             |
++------------v-------------+
+|     Frontend (Next.js)   |
+|  - Routes & UI Components|
+|  - Axios/fetch           |
+|  - Socket.IO Client      |
++------------+-------------+
+             |
+    REST API + WebSocket
+             |
++------------v-------------+
+|   Backend (Node/Express) |
+|  - JWT Auth Only         |
+|  - REST API Modules      |
+|  - Socket.IO Server      |
+|  - Prisma ORM (MongoDB)  |
++------------+-------------+
+             |
+         MongoDB
 ```
 
 ---
 
-## 💻 Tech Stack
+# 🧰 Tech Stack
 
-### Frontend
-- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
-- **Styling**: Tailwind CSS, Framer Motion
-- **State Management**: React Context API
-- **HTTP Client**: Axios / Fetch API
+## **Frontend**
+- Next.js 15 (App Router)  
+- React 19  
+- Tailwind CSS  
+- Axios  
+- Framer Motion  
+- Lucide Icons  
+- Socket.IO Client  
+- date-fns  
 
-### Backend
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: MongoDB
-- **ORM**: Prisma
-- **Authentication**: Passport.js (Google Strategy), JWT
-- **Real-time**: Socket.IO
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-Ensure you have the following installed:
-- **Node.js** (v18 or higher)
-- **npm** or **yarn**
-- **MongoDB** (Local instance or Atlas URI)
-
-### Installation
-
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com/yourusername/AlumniConnect.git
-    cd AlumniConnect
-    ```
-
-2.  **Backend Setup**
-    ```bash
-    cd backend
-    npm install
-    # Start the server
-    npm start
-    ```
-    > The backend server will start on port `3001`.
-
-3.  **Frontend Setup**
-    ```bash
-    cd frontend
-    npm install
-    # Start the development server
-    npm run dev
-    ```
-    > The frontend application will be accessible at `http://localhost:3000`.
-
-### Environment Variables
-
-Create a `.env` file in the `backend` directory with the following configuration:
-
-| Variable | Description | Example |
-| :--- | :--- | :--- |
-| `DATABASE_URL` | MongoDB Connection String | `mongodb+srv://...` |
-| `PORT` | Backend Port | `3001` |
-| `JWT_SECRET` | Secret for signing JWTs | `your_super_secret_key` |
-| `GOOGLE_CLIENT_ID` | Google OAuth Client ID | `...apps.googleusercontent.com` |
-| `GOOGLE_CLIENT_SECRET` | Google OAuth Client Secret | `GOCSPX-...` |
-| `CLIENT_URL` | Frontend URL | `http://localhost:3000` |
+## **Backend**
+- Node.js  
+- Express 5  
+- Prisma ORM (MongoDB)  
+- JWT Authentication  
+- Bcrypt (password hashing)  
+- Socket.IO  
+- CORS  
+- Cookie Parser  
+- Dotenv  
+- Nodemon  
 
 ---
 
-## 📖 API Documentation
+# 📁 Folder Structure
 
-### Auth & Users
+## **Backend — `/backend`**
+```
+backend/
+index.js # Main server (Express + Socket.IO)
 
-| Method | Endpoint | Description | Auth Required |
-| :--- | :--- | :--- | :---: |
-| `GET` | `/auth/google` | Initiate Google OAuth | ❌ |
-| `GET` | `/auth/google/callback` | Google OAuth Callback | ❌ |
-| `GET` | `/api/users/me` | Get current user details | ✅ |
-| `PUT` | `/api/users/set-role` | Set user role (STUDENT/ALUMNI) | ✅ |
-| `POST` | `/api/users/profile` | Create/Update Profile | ✅ |
-| `GET` | `/api/users/:id` | Get user by ID | ❌ |
+prisma/
+schema.prisma # Prisma schema (MongoDB)
 
-### Posts
+src/
+lib/
+prisma.js # Prisma client
 
-| Method | Endpoint | Description | Auth Required |
-| :--- | :--- | :--- | :---: |
-| `POST` | `/posts` | Create a new post | ✅ |
-| `GET` | `/posts` | Get all posts | ❌ |
-| `GET` | `/posts/:id` | Get post by ID | ❌ |
-| `PATCH` | `/posts/:id/like` | Like a post | ✅ |
-| `DELETE` | `/posts/:id` | Delete a post | ✅ |
+markdown
+Copy code
+features/
+  auth/
+    auth.controller.js
+    auth.routes.js
+    auth.service.js
+
+  user/
+    user.controller.js
+    user.service.js
+    user.routes.js
+
+  posts/
+    post.controller.js
+    post.routes.js
+    post.service.js
+
+  comments/
+    comments.controller.js
+    comments.routes.js
+    comments.service.js
+
+  chat/
+    chat.controller.js
+    chat.routes.js
+    chat.service.js
+    chat.socket.js
+
+sockets/
+  index.js
+.env
+package.json
+yaml
+```
+
+
 
 ---
 
-## 🗄 Database Schema
+## **Frontend — `/frontend`**
+```
+frontend/
+next.config.mjs
+public/
 
-The project uses **Prisma** with MongoDB. Below is a simplified view of the core models:
+src/
+app/
+layout.js
+page.js
 
-```prisma
-model User {
-  id              String       @id @default(auto()) @map("_id") @db.ObjectId
-  name            String
-  email           String       @unique
-  role            Role?        // STUDENT or ALUMNI
-  
-  // Role-specific fields
-  graduationYear  Int?
-  company         String?
-  
-  // Relations
-  posts           Post[]
-  createdAt       DateTime     @default(now())
-}
+markdown
+Copy code
+  login/
+    page.jsx
 
-model Post {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  authorId  String    @db.ObjectId
-  author    User      @relation(fields: [authorId], references: [id])
-  title     String
-  content   String
-  likes     Int       @default(0)
-  createdAt DateTime  @default(now())
-}
+  signup/
+    page.jsx
+    student/page.jsx
+    alumni/page.jsx
+
+  posts/
+    page.jsx
+    CreatePostForm.jsx
+    PostCard.jsx
+
+  chat/
+    page.jsx
+
+  profile/
+    page.jsx
+
+  create-profile/
+    page.jsx
+
+  choose-role/
+    page.jsx
+
+components/
+  Navbar.js
+  LandingPage.js
+
+  chat/
+    ChatWindow.jsx
+    MessageInput.jsx
+    MessageItem.jsx
+    MessageList.jsx
+
+  posts/
+    CreatePostForm.jsx
+    PostCard.jsx
+    CommentList.jsx
+
+  forms/
+    StudentProfileForm.jsx
+    AlumniProfileForm.jsx
+
+context/
+  UserContext.jsx
+
+hooks/
+  useSocket.js
+
+utils/
+  api.js
+  socket.js
+.env.local
+
+yaml
 ```
 
 ---
 
-## 📂 Project Structure
+# 🔐 Environment Variables
 
+## **Backend (`/backend/.env`)**
+
+```env
+PORT=3000
+CLIENT_URL=http://localhost:3001
+
+JWT_SECRET=your_jwt_secret_here
+
+DATABASE_URL="mongodb+srv://<user>:<pass>@cluster/dbname"
 ```
-.
-├── backend
-│   ├── controllers      # Business logic
-│   ├── prisma           # Database schema & client
-│   ├── routes           # API route definitions
-│   ├── src
-│   │   └── features     # Modular feature architecture
-│   └── index.js         # Server entry point
-├── frontend
-│   ├── src
-│   │   ├── app          # Next.js App Router pages
-│   │   ├── components   # Reusable UI components
-│   │   └── context      # Global state (UserContext)
-│   └── package.json
-└── README.md
+## **Frontend (/frontend/.env.local)**
+```
+env
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
+**⚙️ Local Setup**
+# 🚀 Getting Started
+
+## 1. Clone the Repository
+```bash
+git clone <repo-url>
+cd <project-folder>
+🖥️ Backend Setup
+bash
+Copy code
+cd backend
+npm install
+npm start
+Runs at: http://localhost:3000
+
+💻 Frontend Setup
+bash
+Copy code
+cd frontend
+npm install
+npm run dev -- --port=3001
+UI opens at: http://localhost:3001
 ```
 
----
+🔁 REST API Endpoints
+```
+🔐 Auth (/auth)
+Method	Route	        Description
+POST	/auth/register	Register user
+POST	/auth/login	    Login user
+```
 
-## 🤝 Contributing
+👤 Users (/users)
+```
+Method	Route	              Description
+GET	  /users/me	              Get logged-in user
+PUT	  /users/set-role	      Set user role (student/alumni)
+POST  /users/profile         Create profile
+GET	  /users/:id	          Get user profile
+GET	  /users/search/:query	  Search users
+```
+📝 Posts (/posts)
+```
+Method	Route	             Description
+POST	 /posts	             Create a post
+GET	   /posts	             Get all posts
+POST	 /posts/:id/like	   Like a post
+POST	 /posts/:id/unlike	 Unlike a post
+```
+💬 Comments (/api/comments)
+```
+Method	Route	                       Description
+GET	   /api/posts/:postId/comments	   Get comments for a post
+POST	/api/comments	                Add a comment
+POST	/api/comments/:id/reply     	Reply to a comment
+```
+💻 Chat (/api/chat)
+```
+Method	Route	                          Description
+GET	   /api/chat/threads	              Get chat threads
+POST	 /api/chat/threads	              Create chat thread
+GET	   /api/chat/messages/:threadId	     Get messages
+POST	 /api/chat/messages/:threadId	    Send message
+```
+**💬 Socket.IO — Realtime Features**
+```
+Connect user
 
-Contributions are welcome! Please follow these steps:
+Join chat thread
 
-1.  Fork the repository.
-2.  Create a new branch (`git checkout -b feature/AmazingFeature`).
-3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4.  Push to the branch (`git push origin feature/AmazingFeature`).
-5.  Open a Pull Request.
+Send new message
 
----
+Receive message instantly
 
-## 📄 License
+Typing indicators
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Online/offline status
+```
+**📌 Future Improvements**
+```
+Push notifications
 
----
+Alumni verification (LinkedIn API)
 
-<div align="center">
-  <sub>Built with ❤️ by the AlumniConnect Team</sub>
-</div>
+Voice/video calls
+
+Recommendation engine
+
+Event management module
+```
+**🤝 Contributing**
+```
+Fork the repository
+
+Create a new branch
+
+Commit your changes
+
+Open a pull request
+```
+**📝 License**
+```
+MIT License © Reunify
+```
+
