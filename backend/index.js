@@ -26,6 +26,7 @@ const defaultOrigins = [
   process.env.FRONTEND_URL,
   clientUrl,
   "https://alumniconnect-frontend.onrender.com",
+  "https://alumni-connect-murex.vercel.app",
 ].filter(Boolean);
 
 const allowedOrigins = Array.from(
