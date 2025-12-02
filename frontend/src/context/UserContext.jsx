@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 const UserContext = createContext({
   user: null,
@@ -17,6 +17,7 @@ const PROFILE_GUARD_DISABLED_ROUTES = new Set([
   "/signup",
   "/create-profile",
   "/auth/success",
+  "/profile",
 ]);
 
 export const UserProvider = ({ children }) => {
@@ -40,7 +41,7 @@ export const UserProvider = ({ children }) => {
     setHasToken(true);
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/users/me`, {
+      const res = await fetch(`${API_BASE}/users/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -95,14 +96,23 @@ export const UserProvider = ({ children }) => {
     }
   }, [user, hasToken, loading, pathname, router]);
 
+  const logout = useCallback(() => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("token");
+    }
+    setHasToken(false);
+    setUser(null);
+  }, []);
+
   const value = useMemo(
     () => ({
       user,
       loading,
       refreshUser: fetchUser,
       setUser,
+      logout,
     }),
-    [user, loading, fetchUser]
+    [user, loading, fetchUser, logout]
   );
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

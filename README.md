@@ -14,7 +14,7 @@ AlumniConnect is a comprehensive platform designed to foster mentorship, network
 
 ## 📑 Table of Contents
 
-- [Features](#-features)
+- [Features](#-Features)
 - [System Architecture](#-system-architecture)
 - [Tech Stack](#-tech-stack)
 - [Getting Started](#-getting-started)
