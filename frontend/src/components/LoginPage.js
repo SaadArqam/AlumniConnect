@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, User } from "lucide-react";
+import { useUser } from "@/context/UserContext";
 
 export default function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,6 +15,7 @@ export default function AuthForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const registered = searchParams?.get?.("registered") === "1";
+  const { refreshUser, setUser } = useUser();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -25,7 +27,7 @@ export default function AuthForm() {
 
     setLoading(true);
     try {
-      const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
       if (!isLogin) {
         // register only, then redirect to login page
@@ -56,15 +58,15 @@ export default function AuthForm() {
         localStorage.setItem("token", data.token);
       }
 
-      if (data.user?.id) {
-        localStorage.setItem("userId", data.user.id);
+      if (data.user) {
+        setUser(data.user);
       }
 
-      if (data.user?.name) {
-        localStorage.setItem("userName", data.user.name);
-      }
+      // ensure global context fetches the latest user before navigation
+      const latestUser = await refreshUser();
+      const hasCompleteProfile = Boolean(latestUser?.role && latestUser?.profile);
 
-      router.push("/profile");
+      router.replace(hasCompleteProfile ? "/" : "/profile");
     } catch (err) {
       setError(err.message || "Server error");
     } finally {
