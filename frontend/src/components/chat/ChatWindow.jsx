@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import useSocket from "../../hooks/useSocket";
-import { getSocket } from "../../utils/socket";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
 import NewThreadModal from "./NewThreadModal";
@@ -30,7 +29,6 @@ export default function ChatWindow() {
   useEffect(() => {
     if (!socket) return;
 
-    const s = getSocket();
     const onNewMessage = (msg) => {
       if (msg.threadId === currentThread) setMessages((m) => [...m, msg]);
     };
@@ -46,22 +44,26 @@ export default function ChatWindow() {
         if (prev.includes(userId)) return prev;
         return [...prev, userId];
       });
-      // remove after short timeout
       setTimeout(() => {
         setTypingUsers((prev) => prev.filter((u) => u !== userId));
       }, 1500);
     };
 
-    s.on("new_message", onNewMessage);
-    s.on("user_typing", onUserTyping);
-    s.on("update_message", onUpdateMessage);
+    socket.on("new_message", onNewMessage);
+    socket.on("user_typing", onUserTyping);
+    socket.on("update_message", onUpdateMessage);
 
     return () => {
-      s.off("new_message", onNewMessage);
-      s.off("user_typing", onUserTyping);
-      s.off("update_message", onUpdateMessage);
+      socket.off("new_message", onNewMessage);
+      socket.off("user_typing", onUserTyping);
+      socket.off("update_message", onUpdateMessage);
     };
   }, [socket, currentThread]);
+
+  useEffect(() => {
+    if (!socket || !currentThread || !connected) return;
+    socket.emit("join_thread", currentThread);
+  }, [socket, currentThread, connected]);
 
   async function openThread(threadId) {
     setCurrentThread(threadId);
@@ -73,7 +75,7 @@ export default function ChatWindow() {
     setMessages(msgs);
 
     // join socket room
-    if (socket) socket.emit("join_thread", threadId);
+    if (socket && connected) socket.emit("join_thread", threadId);
   }
 
   const [replyTo, setReplyTo] = useState(null);
