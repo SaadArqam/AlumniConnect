@@ -1,5 +1,6 @@
 "use client";
 import Link from 'next/link';
+import Image from 'next/image';
 import { Users2, MessageCircle, FileText, User, TrendingUp, Calendar } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -316,9 +317,13 @@ const LandingPage = () => {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
-                  <Users2 className="text-white" size={18} />
-                </div>
+                <Image
+                  src="/logo.png"
+                  alt="Reunify Logo"
+                  width={40}
+                  height={40}
+                  className="w-10 h-10 object-contain"
+                />
                 <span className="text-lg font-semibold text-slate-900">Reunify</span>
               </div>
               <p className="text-slate-600 text-sm leading-relaxed">
