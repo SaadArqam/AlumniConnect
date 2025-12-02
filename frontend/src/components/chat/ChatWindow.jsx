@@ -14,17 +14,19 @@ export default function ChatWindow() {
   const [typingUsers, setTypingUsers] = useState([]);
   const [isNewThreadModalOpen, setIsNewThreadModalOpen] = useState(false);
 
+  const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000").replace(/\/$/, "");
+
   useEffect(() => {
     if (!token) return;
 
     // fetch threads
-    fetch((process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000") + "/api/chat", {
+    fetch(`${API_BASE}/api/chat`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => r.json())
       .then(setThreads)
       .catch(console.error);
-  }, [token]);
+  }, [token, API_BASE]);
 
   useEffect(() => {
     if (!socket) return;
@@ -68,7 +70,7 @@ export default function ChatWindow() {
   async function openThread(threadId) {
     setCurrentThread(threadId);
     if (!token) return;
-    const res = await fetch((process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000") + `/api/chat/${threadId}/messages`, {
+    const res = await fetch(`${API_BASE}/api/chat/${threadId}/messages`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const msgs = await res.json();
@@ -91,7 +93,7 @@ export default function ChatWindow() {
   function handleToggleUpvote(messageId) {
     if (!socket) {
       // fallback: call REST
-      fetch((process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000") + `/api/chat/messages/${messageId}/upvote`, {
+      fetch(`${API_BASE}/api/chat/messages/${messageId}/upvote`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       }).then((r) => r.json()).then((m) => setMessages((prev) => prev.map((p) => (p.id === m.id ? m : p)))).catch(console.error);
@@ -103,7 +105,7 @@ export default function ChatWindow() {
 
   async function createThread(title) {
     if (!token) return;
-    const res = await fetch((process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000") + "/api/chat", {
+    const res = await fetch(`${API_BASE}/api/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ title }),
@@ -117,7 +119,7 @@ export default function ChatWindow() {
     if (!token) return;
 
     try {
-      const res = await fetch((process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000") + `/api/chat/messages/${messageId}`, {
+      const res = await fetch(`${API_BASE}/api/chat/messages/${messageId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

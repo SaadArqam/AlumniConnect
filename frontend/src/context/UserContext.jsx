@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://alumniconnect-backend-31pn.onrender.com";
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "https://alumniconnect-backend-31pn.onrender.com").replace(/\/$/, "");
 
 const UserContext = createContext({
   user: null,
