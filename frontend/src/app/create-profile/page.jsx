@@ -8,7 +8,7 @@ import StudentProfileForm from "@/components/profile/StudentProfileForm";
 import AlumniProfileForm from "@/components/profile/AlumniProfileForm";
 import { useUser } from "@/context/UserContext";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://alumniconnect-backend-31pn.onrender.com";
 
 export default function CreateProfilePage() {
   const router = useRouter();

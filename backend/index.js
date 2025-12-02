@@ -21,7 +21,15 @@ const app = express();
 // Configure CORS: in development reflect the request origin so multiple localhost ports work.
 // In production, only allow the configured CLIENT_URL.
 const clientUrl = process.env.CLIENT_URL;
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || clientUrl || "")
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
 console.log("CORS client URL:", clientUrl || "(not set - development mode will reflect origin)");
+if (allowedOrigins.length) {
+  console.log("Additional allowed origins:", allowedOrigins.join(", "));
+}
 
 const corsOptions = {
   credentials: true,
@@ -32,8 +40,14 @@ const corsOptions = {
     // during development, be permissive and reflect the origin
     if (process.env.NODE_ENV !== "production") return callback(null, true);
 
-    // in production, only allow the configured client URL
-    if (clientUrl && origin === clientUrl) return callback(null, true);
+    // in production, check explicit allow-list
+    if (allowedOrigins.length === 0) {
+      return callback(null, true);
+    }
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
 
     // otherwise block
     return callback(new Error("Not allowed by CORS"));

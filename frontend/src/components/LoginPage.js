@@ -27,11 +27,11 @@ export default function AuthForm() {
 
     setLoading(true);
     try {
-      const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const base = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000").replace(/\/$/, "");
 
       if (!isLogin) {
         // register only, then redirect to login page
-        const regRes = await fetch(base + "/auth/register", {
+        const regRes = await fetch(`${base}/auth/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, email, password }),
@@ -45,7 +45,7 @@ export default function AuthForm() {
       }
 
       // login
-      const res = await fetch(base + "/auth/login", {
+      const res = await fetch(`${base}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
