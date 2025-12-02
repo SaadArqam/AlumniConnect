@@ -95,8 +95,7 @@ src/
 lib/
 prisma.js # Prisma client
 
-markdown
-Copy code
+
 features/
   auth/
     auth.controller.js
@@ -146,8 +145,7 @@ app/
 layout.js
 page.js
 
-markdown
-Copy code
+
   login/
     page.jsx
 
@@ -234,7 +232,6 @@ git clone <repo-url>
 cd <project-folder>
 🖥️ Backend Setup
 bash
-Copy code
 cd backend
 npm install
 npm start
@@ -242,7 +239,6 @@ Runs at: http://localhost:3000
 
 💻 Frontend Setup
 bash
-Copy code
 cd frontend
 npm install
 npm run dev -- --port=3001
