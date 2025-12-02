@@ -42,7 +42,7 @@ export default function Navbar() {
           <div className="w-7 h-7 bg-slate-900 rounded-lg flex items-center justify-center">
             <Users2 className="text-white" size={16} />
           </div>
-          <span className="text-base font-semibold text-slate-900">AlumniConnect</span>
+          <span className="text-base font-semibold text-slate-900">Reunify</span>
         </Link>
 
         {/* Desktop Menu */}
@@ -53,12 +53,12 @@ export default function Navbar() {
           <Link href="/chat" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
             Chat
           </Link>
-          <Link href="/about" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
+          {/* <Link href="/about" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
             About
           </Link>
           <Link href="/connect" className="text-slate-700 hover:text-slate-900 transition-colors text-sm">
             Connect
-          </Link>
+          </Link> */}
 
           {token && (
             <>
@@ -113,12 +113,12 @@ export default function Navbar() {
             <Link href="/chat" className="text-slate-700 hover:text-slate-900 transition-colors py-2.5 px-3 rounded-lg hover:bg-slate-100 text-sm">
               Chat
             </Link>
-            <Link href="/about" className="text-slate-700 hover:text-slate-900 transition-colors py-2.5 px-3 rounded-lg hover:bg-slate-100 text-sm">
+            {/* <Link href="/about" className="text-slate-700 hover:text-slate-900 transition-colors py-2.5 px-3 rounded-lg hover:bg-slate-100 text-sm">
               About
             </Link>
             <Link href="/contact" className="text-slate-700 hover:text-slate-900 transition-colors py-2.5 px-3 rounded-lg hover:bg-slate-100 text-sm">
               Contact
-            </Link>
+            </Link> */}
 
             {token && (
               <>

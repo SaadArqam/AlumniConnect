@@ -87,7 +87,7 @@ export default function AuthForm() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2">
-            {isLogin ? "Welcome Back" : "Join AlumniConnect"}
+            {isLogin ? "Welcome Back" : "Join Reunify"}
           </h1>
           <p className="text-slate-600 text-sm">
             {isLogin ? "Sign in to continue your journey" : "Create your account to get started"}
@@ -154,7 +154,7 @@ export default function AuthForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent transition-all"
-                  placeholder="••••••••"
+                  placeholder="password"
                 />
               </div>
             </div>
