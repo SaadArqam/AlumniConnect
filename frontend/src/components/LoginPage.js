@@ -39,7 +39,8 @@ export default function AuthForm() {
         const regJson = await regRes.json();
         if (!regRes.ok) throw new Error(regJson.error || "Registration failed");
 
-        // Registration successful - redirect to login with a success flag
+        // Registration successful - switch to login view and show success flag
+        setIsLogin(true);
         router.push("/login?registered=1");
         return;
       }

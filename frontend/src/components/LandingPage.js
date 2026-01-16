@@ -48,7 +48,7 @@ const LandingPage = () => {
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center items-center ">
                 <Link
-                  href="/signup"
+                  href="/login"
                   className="px-6 py-3 bg-slate-900 text-white rounded-full hover:bg-slate-800 transition-all font-medium text-xs sm:text-sm shadow-lg hover:shadow-xl"
                 >
                   Join for Free →

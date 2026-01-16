@@ -1,22 +1,22 @@
-# 🎓 Reunify  
+# Reunify  
 *A modern full-stack networking platform bridging students and alumni.*
 
 Reunify enables **students and alumni of the same institution** to connect, share opportunities, mentor each other, and engage in meaningful discussions.
 
 ---
 
-## ✨ Features
+## Features
 
-- 🔐 **JWT Authentication (Email + Password Only)**
-- 👤 **Role-based profiles** — Student / Alumni  
-- 📝 **Social Feed** — posts, likes, comments & threaded replies  
-- 💬 **Real-time chat** using Socket.IO  
-- 📚 **Rich profiles** — skills, education, professional details  
-- ⚡ **Next.js Frontend + Node.js Backend + Prisma + MongoDB**
+- **JWT Authentication (Email + Password Only)**
+- **Role-based profiles** — Student / Alumni  
+- **Social Feed** — posts, likes, comments & threaded replies  
+- **Real-time chat** using Socket.IO  
+- **Rich profiles** — skills, education, professional details  
+- **Next.js Frontend + Node.js Backend + Prisma + MongoDB**
 
 ---
 
-# 🧱 Architecture Overview
+# Architecture Overview
 
 
 
@@ -55,7 +55,7 @@ Reunify enables **students and alumni of the same institution** to connect, shar
 
 ---
 
-# 🧰 Tech Stack
+# Tech Stack
 
 ## **Frontend**
 - Next.js 15 (App Router)  
@@ -81,7 +81,7 @@ Reunify enables **students and alumni of the same institution** to connect, shar
 
 ---
 
-# 📁 Folder Structure
+# Folder Structure
 
 ## **Backend — `/backend`**
 ```
@@ -206,7 +206,7 @@ yaml
 
 ---
 
-# 🔐 Environment Variables
+# Environment Variables
 
 ## **Backend (`/backend/.env`)**
 
@@ -223,8 +223,8 @@ DATABASE_URL="mongodb+srv://<user>:<pass>@cluster/dbname"
 env
 NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
-**⚙️ Local Setup**
-# 🚀 Getting Started
+**Local Setup**
+# Getting Started
 
 ## 1. Clone the Repository
 ```bash
@@ -245,15 +245,15 @@ npm run dev -- --port=3001
 UI opens at: http://localhost:3001
 ```
 
-🔁 REST API Endpoints
+REST API Endpoints
 ```
-🔐 Auth (/auth)
+ Auth (/auth)
 Method	Route	        Description
 POST	/auth/register	Register user
 POST	/auth/login	    Login user
 ```
 
-👤 Users (/users)
+ Users (/users)
 ```
 Method	Route	              Description
 GET	  /users/me	              Get logged-in user
@@ -262,7 +262,7 @@ POST  /users/profile         Create profile
 GET	  /users/:id	          Get user profile
 GET	  /users/search/:query	  Search users
 ```
-📝 Posts (/posts)
+ Posts (/posts)
 ```
 Method	Route	             Description
 POST	 /posts	             Create a post
@@ -270,14 +270,14 @@ GET	   /posts	             Get all posts
 POST	 /posts/:id/like	   Like a post
 POST	 /posts/:id/unlike	 Unlike a post
 ```
-💬 Comments (/api/comments)
+ Comments (/api/comments)
 ```
 Method	Route	                       Description
 GET	   /api/posts/:postId/comments	   Get comments for a post
 POST	/api/comments	                Add a comment
 POST	/api/comments/:id/reply     	Reply to a comment
 ```
-💻 Chat (/api/chat)
+Chat (/api/chat)
 ```
 Method	Route	                          Description
 GET	   /api/chat/threads	              Get chat threads
@@ -285,7 +285,7 @@ POST	 /api/chat/threads	              Create chat thread
 GET	   /api/chat/messages/:threadId	     Get messages
 POST	 /api/chat/messages/:threadId	    Send message
 ```
-**💬 Socket.IO — Realtime Features**
+**Socket.IO — Realtime Features**
 ```
 Connect user
 
@@ -299,7 +299,7 @@ Typing indicators
 
 Online/offline status
 ```
-**📌 Future Improvements**
+**Future Improvements**
 ```
 Push notifications
 
@@ -311,7 +311,7 @@ Recommendation engine
 
 Event management module
 ```
-**🤝 Contributing**
+**Contributing**
 ```
 Fork the repository
 
@@ -321,7 +321,7 @@ Commit your changes
 
 Open a pull request
 ```
-**📝 License**
+**License**
 ```
 MIT License ©️ Reunify
 ```
