@@ -93,13 +93,13 @@ app.get("/metrics", (_, res) => {
 
 //  HEALTH
 
-app.get("/health",(_, res) => {
+app.get("/health", (_, res) => {
   res.status(200).json({
     status: "ok",
     uptime: process.uptime(),
-    activeSessions: sessions.size,
   });
 });
+
 
 // one shared HTTP server
 const server = http.createServer(app);
