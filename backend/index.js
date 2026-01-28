@@ -81,6 +81,26 @@ app.use("/api/chat", chatRoutes);
 app.use("/posts", postRoutes);
 app.use("/api", commentRoutes);
 
+
+
+app.get("/metrics", (_, res) => {
+  res.json([...sessions.values()].map(s => ({
+    id: s.id,
+    state: s.state,
+  })));
+});
+
+
+//  HEALTH
+
+app.get("/health",(_, res) => {
+  res.status(200).json({
+    status: "ok",
+    uptime: process.uptime(),
+    activeSessions: sessions.size,
+  });
+});
+
 // one shared HTTP server
 const server = http.createServer(app);
 
